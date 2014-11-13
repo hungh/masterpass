@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="Generator" content="EditPlus�">
+  <meta name="Author" content="">
+  <meta name="Keywords" content="">
+  <meta name="Description" content="">
+  <title>Document</title>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+  <script src="/js/login-controller.js"></script>
+ </head>
+ </head>
+ <body>
+  <div ng-app='main' ng-controller="loginController">
+    <font style="color: blue">Welcome to Master Password Project by Hung Huynh</font><br>
+    <font style="color:green">Please enter your user name and password</font><br>
+    <form ng-submit="login_submit()">
+	       User name : <input type="text" ng-model='login'><br><br>
+	       Password  : <input type="password" ng-model='password'><br>
+	       <input type="submit" value="Login">
+  </form>
+ </body>
+</html>
+
