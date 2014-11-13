@@ -1,0 +1,45 @@
+/*** custom app css file */
+.main {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+}
+
+.form-control{
+	width: 170px;
+}
+
+.first-column {
+  width: 40%;
+  float: left;
+}
+
+.second-column {
+  width: 40%;
+  float: right;
+}
+
+.logout {
+	position: absolute;
+	top: 380px;
+	left: 20px;
+	font: bold 11px Arial;
+  	text-decoration: none;
+  	background-color: #EEEEEE;
+  	color: #333333;
+  	padding: 2px 6px 2px 6px;
+  	border-top: 1px solid #CCCCCC;
+  	border-right: 1px solid #333333;
+  	border-bottom: 1px solid #333333;
+  	border-left: 1px solid #CCCCCC;
+}
+
+.btn {    
+    font-size: 12px;
+    line-height: normal;   
+    width: 170px; 
+}
+
+.mtext {
+	width: 170px; 	
+}

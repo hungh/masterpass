@@ -1,6 +1,6 @@
 /** login controller */
 
-angular.module('main', [])
+angular.module('login-app', [])
 	.controller('loginController', ['$scope', '$http', function($scope, $http){		
 		$scope.login_submit = function(){
 			var httpResponse = $http({
