@@ -6,20 +6,44 @@
   <meta name="Author" content="">
   <meta name="Keywords" content="">
   <meta name="Description" content="">
-  <title>Document</title>
+  <meta http-equiv="cache-control" content="max-age=0" />
+  <meta http-equiv="cache-control" content="no-cache" />
+  <meta http-equiv="expires" content="0" />
+  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+  <meta http-equiv="pragma" content="no-cache" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Secure Storage</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/app.css">    
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   <script src="/js/login-controller.js"></script>
  </head>
  </head>
  <body>
-  <div ng-app='login-app' ng-controller="loginController">
-    <font style="color: blue">Welcome to Master Password Project by Hung Huynh</font><br>
-    <font style="color:green">Please enter your user name and password</font><br>
-    <form ng-submit="login_submit()">
-	       User name : <input type="text" ng-model='login'><br><br>
-	       Password  : <input type="password" ng-model='password'><br>
-	       <input type="submit" value="Login">
-  </form>
+  <div class="welcome">    
+    <font style="color: blue">Welcome to HTTP Python server</font><br>
+    <strong style="color:green">Secure Password Storage</strong><br><br>                    
+  </div>
+  <br>
+  
+  <div class="main" ng-app='login-app' ng-controller="loginController">    
+      <form ng-submit="login_submit()" role="form">
+          <div class="form-group">
+            <label for="userid">User name:</label>
+  	        <input type="text" class="form-control" ng-model='login' id="userid">
+          </div>
+          <div class="form-group">
+            <label for="password">Password: </label>
+  	        <input type="password" class="form-control" ng-model='password' id="password">
+          </div>
+
+          <div class="checkbox">
+            <label><input type="checkbox"> Remember me</label>
+          </div>
+
+          <button type="submit" class="btn btn-info">Login</button>  	      
+    </form>
+  </div>
  </body>
 </html>
 
