@@ -45,7 +45,7 @@ class UserStore:
         return self.db.users_col.find_one({'uid': uid})
 
     def update_user_by_id(self, user):
-        self.db.users_col.update({"uid": user.uid}, {"$set": user.to_json()})
+        self.db.users_col.update({"uid": user.uid}, {"$set": {"first": user.first, "last": user.last}})
 
     def get_total_users(self):
         return self.db.users_col.count()

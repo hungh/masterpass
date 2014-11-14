@@ -2,8 +2,8 @@
 
 /** login controller */
 
-angular.module('admin-app', [])
-	.controller('adminController', ['$scope', '$window', '$http', function($scope, $window, $http ){		
+var adminApp = angular.module('admin-app', [])
+	.controller('adminController', ['$scope', '$window', '$http', 'transformReq', function($scope, $window, $http, transformReq){		
 		$scope.users = [
 			{id: 'hung2', first: 'Hung', last: 'Huynh'},
 			{id: 'hung3', first: 'Tren', last: 'Huynh'},
@@ -32,25 +32,47 @@ angular.module('admin-app', [])
 		$scope.addUser = function(){
 			//TODO: update to server if success then update users array
 			$scope.users.push({id: $scope.newId, first: $scope.newFirst, last: $scope.newLast});
-			alert('Done');
+			var httpResponse = $http({
+			    method: 'POST',
+			    url: '/user/add',
+			    transformRequest: transformReq,
+			    data: {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword},
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			}).success(function(status){
+				alert(status);
+			}).error(function(err_msg){
+				alert(err_msg);
+			});			
 		}
 
 		$scope.saveUser = function(uid, first, last){
 			$window.alert("The following user with ID:" + uid + "\nFirst name:" + first + "\nLast name:" + last + 'will be updated to server');
-			var isNew = true;
-			angular.forEach($scope.users, function(oneUser, index){
-				
-				if(oneUser.id == uid){					
-					$scope.users [index].first = first;
-					$scope.users [index].last  = last;
-					isNew = false;
-					return;
-				}
-			});
-			// new user, add to the user array
-			if(isNew){
-				$scope.users.push({id: uid, first: first, last: last});
-			}			
+
+			var httpResponse = $http({
+			    method: 'POST',
+			    url: '/user/update',
+			    transformRequest: transformReq,
+			    data: {id: uid, first: first, last: first},
+			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			}).success(function(status){
+				alert(status);
+				var isNew = true;
+				angular.forEach($scope.users, function(oneUser, index){
+					
+					if(oneUser.id == uid){					
+						$scope.users [index].first = first;
+						$scope.users [index].last  = last;
+						isNew = false;
+						return;
+					}
+				});
+				// new user, add to the user array
+				if(isNew){
+					$scope.users.push({id: uid, first: first, last: last});
+				}		
+			}).error(function(err_msg){
+				alert(err_msg);
+			});			
 		};
 
 		$scope.deleteUser = function(uid){		
@@ -70,3 +92,13 @@ angular.module('admin-app', [])
 		};
 
 	}]);
+
+
+adminApp.factory('transformReq', function(){
+	return function transformRequest(obj){
+		var str = [];
+        for(var p in obj)
+        	str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        return str.join("&");		
+	};
+});
