@@ -1,7 +1,7 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
 from master.sesscontroller.session_controller import SessionController
-from master.consts import SESSION_USER_ID, CURRENT_USER_ACTION
+from master.consts import SESSION_USER_ID, CURRENT_USER_ACTION, CHANGE_PW_ACTION
 from master.beans.users import User
 import bcrypt
 import json
@@ -19,6 +19,7 @@ class UserController(ActionController):
         self.first = None
         self.last = None
         self.password = None
+        self.new_password = None
         self.user_store = UserStore()
         ActionController.__init__(self, request_handler, action)
 
@@ -27,6 +28,7 @@ class UserController(ActionController):
         self.first = self.get_request_parameter('first')
         self.last = self.get_request_parameter('last')
         self.password = self.get_request_parameter('password')
+        self.new_password = self.get_request_parameter('new_password')
 
     def get_current_login_user_id(self):
         """
@@ -34,6 +36,10 @@ class UserController(ActionController):
         """
         session_bean, was_created_new = SessionController().get_session(self.request_handler, will_create_new=False)
         return session_bean.get_attribute(SESSION_USER_ID)
+
+    def change_password(self):
+        #TODO:
+        return False
 
     def get_user(self):
         """
@@ -59,5 +65,10 @@ class UserController(ActionController):
         if action == CURRENT_USER_ACTION:
             current_login_id = self.get_current_login_user_id()
             self.write_one_response(str_msg=str(current_login_id), all_cookies=[self._jsession_cookie])
+        elif action == CHANGE_PW_ACTION:
+            if self.change_password():
+                self.write_one_response(str_msg="Your password was changed.", all_cookies=[self._jsession_cookie])
+            else:
+                return "Failed to change password"
 
 

@@ -63,11 +63,16 @@ class ActionController(BaseHttpController):
     @abstractmethod
     def delete_user(self):
         """
-        :param user: master.beans.users.User
+        Delete user
         """
         pass
 
     @abstractmethod
     def other_action_mappings(self, action):
+        """
+        Return string if error, None otherwise
+        :param action: string HTTP query
+        :return:
+        """
         pass
 
