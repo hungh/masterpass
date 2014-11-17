@@ -1,7 +1,7 @@
 from master.httpcontroller.base_controller import BaseHttpController
 from master.sesscontroller.session_controller import SessionController
 from master.logger.file_logger import logger
-from master.consts import ADD_ACTION, UPDATE_ACTION, GET_ACTION
+from master.consts import ADD_ACTION, UPDATE_ACTION, GET_ACTION, DELETE_ACTION
 from abc import ABCMeta, abstractmethod
 
 
@@ -16,7 +16,6 @@ class ActionController(BaseHttpController):
         self._request_handler = request_handler
         self._action = action
         self._jsession_cookie = None
-        self._data = {}
         BaseHttpController.__init__(self, request_handler)
 
     def control(self):
@@ -32,7 +31,11 @@ class ActionController(BaseHttpController):
         elif self._action == GET_ACTION:
             err = self.get_user()
         elif self._action == UPDATE_ACTION:
-            err = self.update_user(self._data)
+            err = self.update_user()
+        elif self._action == DELETE_ACTION:
+            err = self.delete_user()
+        else:
+            err = self.other_action_mappings(self._action)
         if err:
             self.write_one_response(str_msg=err, all_cookies=[self._jsession_cookie])
 
@@ -51,11 +54,20 @@ class ActionController(BaseHttpController):
         pass
 
     @abstractmethod
-    def update_user(self, user):
+    def update_user(self):
         """
         :return: error string or None
         """
         pass
 
+    @abstractmethod
+    def delete_user(self):
+        """
+        :param user: master.beans.users.User
+        """
+        pass
 
+    @abstractmethod
+    def other_action_mappings(self, action):
+        pass
 

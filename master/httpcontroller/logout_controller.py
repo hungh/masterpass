@@ -16,4 +16,4 @@ class LogoutController(BaseHttpController):
         jsession_cookie = SessionController.get_jsession_cookie(self.request_handler)
         if jsession_cookie is not None:
             jsession_cookie['expires'] = 'Thu, 01-Jan-70 00:00:01 GMT;'
-        self.write_one_response(str_msg="Successfully logged out.", all_cookies=[jsession_cookie])
+        self.write_redirect('/index.html')

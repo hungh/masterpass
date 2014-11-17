@@ -27,7 +27,7 @@
   <br>
   
   <div class="main" ng-app='login-app' ng-controller="loginController">    
-      <form ng-submit="login_submit()" role="form">
+      <form ng-submit="login_submit()" role="form" autocomplete="{{getAutoComplete(autocomplete)}}">
           <div class="form-group">
             <label for="userid">User name:</label>
   	        <input type="text" class="form-control" ng-model='login' id="userid">
@@ -38,7 +38,7 @@
           </div>
 
           <div class="checkbox">
-            <label><input type="checkbox"> Remember me</label>
+            <label><input type="checkbox" ng-model="autocomplete"> Remember me</label>
           </div>
 
           <button type="submit" class="btn btn-info">Login</button>  	      

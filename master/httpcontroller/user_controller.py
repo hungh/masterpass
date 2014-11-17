@@ -1,5 +1,7 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
+from master.sesscontroller.session_controller import SessionController
+from master.consts import SESSION_USER_ID, CURRENT_USER_ACTION
 from master.beans.users import User
 import bcrypt
 import json
@@ -26,6 +28,13 @@ class UserController(ActionController):
         self.last = self.get_request_parameter('last')
         self.password = self.get_request_parameter('password')
 
+    def get_current_login_user_id(self):
+        """
+        Return the current login id in HTTP session
+        """
+        session_bean, was_created_new = SessionController().get_session(self.request_handler, will_create_new=False)
+        return session_bean.get_attribute(SESSION_USER_ID)
+
     def get_user(self):
         """
         Get all users
@@ -38,6 +47,17 @@ class UserController(ActionController):
         self.user_store.insert_new_user(User(self.id, self.first, self.last, hashpw, False))
         self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
 
-    def update_user(self, user):
+    def update_user(self):
         self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
         self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
+
+    def delete_user(self):
+        self.user_store.delete_user_by_id(self.id)
+        self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
+
+    def other_action_mappings(self, action):
+        if action == CURRENT_USER_ACTION:
+            current_login_id = self.get_current_login_user_id()
+            self.write_one_response(str_msg=str(current_login_id), all_cookies=[self._jsession_cookie])
+
+

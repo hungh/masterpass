@@ -7,9 +7,11 @@ USER_FIRST_NAME = "first"
 USER_LAST_NAME = "last"
 USER_HASH_PW = "hashpw"
 DB_SERVER_PORT = 27017
-SESSION_PASSWORD = "spassword"
+SESSION_USER_ID = "uid"
 # operations
+CURRENT_USER_ACTION = "current"
 GET_ACTION = "get"
 ADD_ACTION = "add"
 UPDATE_ACTION = "update"
+DELETE_ACTION = "delete"
 DEFAULT_PORT=8009

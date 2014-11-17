@@ -5,7 +5,7 @@
 var adminApp = angular.module('admin-app', [])
 	.controller('adminController', ['$scope', '$window', '$http', 'transformReq', function($scope, $window, $http, transformReq){		
 
-		var httpResponse = $http({
+		$http({
 		    method: 'GET',
 		    url: '/user/get',
 		}).success(function(jsonStr){
@@ -29,16 +29,16 @@ var adminApp = angular.module('admin-app', [])
 			
 		};
 
-		$scope.addUser = function(){
-			//TODO: update to server if success then update users array
-			$scope.users.push({id: $scope.newId, first: $scope.newFirst, last: $scope.newLast});
+		$scope.addUser = function(){			
+			var newUser = {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword};			
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/user/add',
 			    transformRequest: transformReq,
-			    data: {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast},
+			    data: newUser,
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			}).success(function(status){
+				$scope.users.push(newUser);
 				alert(status);
 			}).error(function(err_msg){
 				alert(err_msg);
@@ -78,15 +78,20 @@ var adminApp = angular.module('admin-app', [])
 		$scope.deleteUser = function(uid){					
 			var ans = $window.confirm('Are you sure you want to delete :' + uid);
 			if (ans == true){
-				// TODO: send delete command to server
-				// reload users
-				// for now we just splice the user array
-				angular.forEach($scope.users, function(oneUser, index){
-					if (oneUser.id == uid){
-						$scope.users.splice(index, 1);
-						return;						
-					}
-				});
+				var httpResponse = $http({
+				    method: 'GET',
+				    url: '/user/delete?id=' + uid,
+				}).success(function(stat){
+					$window.alert(stat);
+					angular.forEach($scope.users, function(oneUser, index){
+						if (oneUser.id == uid){
+							$scope.users.splice(index, 1);
+							return;						
+						}
+					});
+				}).error(function(err_msg){
+					alert(err_msg);
+				});						
 			}
 		};
 

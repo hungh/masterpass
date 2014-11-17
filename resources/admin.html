@@ -28,10 +28,11 @@
                 <li class="active">              
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu <span class="caret"></span></a>
                   <ul class="dropdown-menu">
+                    <li><a href="/work.html"><span class="glyphicon glyphicon-home"></span> Main</a></li>
                     <li><a href ng-click="switchMenu('addUserId')"><span class="glyphicon glyphicon-plus" ></span> Add user</a></li>
                     <li><a href ng-click="switchMenu('removeUserId')"><span class="glyphicon glyphicon-minus"></span> Remove user</a></li>
                     <li><a href ng-click="switchMenu('updateUserId')"><span class="glyphicon glyphicon-upload"></span> Update user</a></li>
-                    <li><a href="/work.html"><span class="glyphicon glyphicon-backward"></span> Back</a></li>                        
+                    <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>                        
                   </ul>
                 </li>            
               </ul>
@@ -43,7 +44,7 @@
           <div>
             <div>
                   <div style="display:block" id="updateUserId">   
-                   
+                      <font color="blue"><strong>Update an exising user</strong></font>
                       <div class="form-group">
                           <label for="slcuser">Select user:</label>
                           <select class="form-control"  ng-model="selectedUser" ng-options="user.id group by user.last for user in users" id="slcuser">
@@ -70,7 +71,7 @@
               </div>
 
               <div style="display:none"  id="addUserId">
-                <strong>Enter new user</strong>
+                <font color="blue"><strong>Add a new user</strong></font>                
                 <form role="form">
                   <div class="form-group">
                     <label for="newId">User ID:</label>
@@ -98,8 +99,8 @@
 
               </div>
 
-              <div style="display:none"  id="removeUserId">
-                    <strong>Remove user from the system:</strong><br>
+              <div style="display:none"  id="removeUserId">                    
+                    <font color="blue"><strong>Remove an existing user:</strong></font>
                     <input class="form-control" ng-model="searchText"><br>
                     <div class="panel-group" id="accordion">
 

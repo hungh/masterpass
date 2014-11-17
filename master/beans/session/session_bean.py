@@ -41,7 +41,7 @@ class SessionBean:
         :return: object
         """
         self.error_if_session_valid()
-        return self.sess_attributes.get(key=attr_key)
+        return self.sess_attributes.get(attr_key)
 
     def re_use_session(self, new_sess_id):
         """

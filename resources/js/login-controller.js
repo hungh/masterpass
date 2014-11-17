@@ -19,5 +19,12 @@ angular.module('login-app', [])
 			}).error(function(err_msg){
 				alert(err_msg);
 			});	
+		}
+
+		$scope.getAutoComplete = function(bol){
+			if (bol === true){
+				return "on";
+			}
+			return "off";			
 		}		
 	}]);

@@ -17,6 +17,15 @@ angular.module('main', [])
 		$scope.currUser = $scope.users[0];
 		$scope.currEnviron = 'DEV';
 
+		$http({
+			    method: 'GET',
+			    url: '/user/current',
+		}).success(function(login_uid){
+			$scope.current_login = login_uid;
+		}).error(function(err_msg){
+			alert(err_msg);
+		});		
+
 		/** functions */
 		$scope.getUserPassword = function(){			
 			$scope.currUser.password = "sfas";
@@ -28,5 +37,11 @@ angular.module('main', [])
 
 		$scope.updateUserPassword = function(){
 			alert('');
+		}
+
+		$scope.getAdminLink = function(){
+			if ($scope.current_login == 'root')
+				return "/admin.html";
+			return '#';
 		}
 	}]);
