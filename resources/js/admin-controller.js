@@ -4,19 +4,28 @@
 
 var adminApp = angular.module('admin-app', [])
 	.controller('adminController', ['$scope', '$window', '$http', 'transformReq', function($scope, $window, $http, transformReq){		
-		$scope.users = [
+
+		var httpResponse = $http({
+		    method: 'GET',
+		    url: '/user/get',
+		}).success(function(jsonStr){
+			$scope.users = jsonStr;
+			$scope.selectedUser = $scope.users [0];
+			$scope.selectedMenu = $scope.memus [0]
+		}).error(function(err_msg){
+			alert(err_msg);
+		});		
+
+		/*$scope.users = [
 			{id: 'hung2', first: 'Hung', last: 'Huynh'},
 			{id: 'hung3', first: 'Tren', last: 'Huynh'},
 			{id: 'hun42', first: 'Long', last: 'Nguyen'},
 			{id: 'hung5', first: 'Sna', last: 'Collin'},
 			{id: 'hung34', first: 'Tong', last: 'William'},
 			{id: 'hung12', first: 'Theredoor', last: 'Phan'}			
-		];
+		];*/
 
 		$scope.memus = ['addUserId', 'removeUserId', 'updateUserId'];		
-
-		$scope.selectedUser = $scope.users [0];
-		$scope.selectedMenu = $scope.memus [0]
 
 		$scope.switchMenu = function(elemId){
 			angular.forEach($scope.memus, function(elementId, index){

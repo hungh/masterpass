@@ -2,6 +2,7 @@ from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
 from master.beans.users import User
 import bcrypt
+import json
 
 
 class UserController(ActionController):
@@ -26,16 +27,17 @@ class UserController(ActionController):
         self.password = self.get_request_parameter('password')
 
     def get_user(self):
-        self.write_one_response(str_msg="Successfully get a user.", all_cookies=[self._jsession_cookie])
-        return None
+        """
+        Get all users
+        """
+        all_user = self.user_store.get_all_users()
+        self.write_one_response(str_msg=json.dumps(all_user), all_cookies=[self._jsession_cookie])
 
     def add_user(self):
         hashpw = bcrypt.hashpw(self.password, bcrypt.gensalt())
-        self.user_store.insert_new_user(User(self.id,self.first, self.last, hashpw, False))
+        self.user_store.insert_new_user(User(self.id, self.first, self.last, hashpw, False))
         self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
-        return None
 
     def update_user(self, user):
         self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
         self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
-        return None

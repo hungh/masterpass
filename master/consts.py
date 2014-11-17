@@ -1,6 +1,7 @@
-PROJECT_HOME = '/usr/local/tmc/PycharmProjects/MasterPswrd'
+USER_HOME = '/usr/local/tmc'
+PROJECT_HOME = '/usr/local/tmc/masterpass'
 SESSION_TIMEOUT = 180000
-DB_USERS_LOCATION = PROJECT_HOME + '/persist/users.db'
+DB_USERS_LOCATION = '/usr/local/tmc/PycharmProjects/MasterPswrd/persist/users.db'
 USER_ID = "id"
 USER_FIRST_NAME = "first"
 USER_LAST_NAME = "last"

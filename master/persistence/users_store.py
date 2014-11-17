@@ -41,6 +41,13 @@ class UserStore:
         """
         return self.db.users_col.insert(user.to_json())
 
+    def get_all_users(self):
+        all_users = []
+        for user in self.db.users_col.find():
+            all_users.append({'id': user['uid'], 'first': user['first'], 'last': user['last']})
+
+        return all_users
+
     def get_user_by_id(self, uid):
         return self.db.users_col.find_one({'uid': uid})
 

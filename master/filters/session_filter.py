@@ -18,7 +18,7 @@ class SessionFilter(AbstractFilter):
         allow_paths = ['/login', '/index.html', '/']
         if curr_path in allow_paths \
                 or re.match(r'/js/[\w-]+.js$', curr_path) \
-                or re.match(r'[\w]+.(?:html|jpg|css)$', curr_path):
+                or re.match(r'[\w/]+.(?:html|jpg|css)$', curr_path):
             print(' by pass path=' + curr_path)
             return True, ""
 

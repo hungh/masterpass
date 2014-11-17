@@ -6,5 +6,5 @@ else
    PROJECT_HOME=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )
    PYTHONPATH=${PROJECT_HOME}
    export PYTHONPATH
-   python3  ${PROJECT_HOME}/master/main.py $1
+   python3  ${PROJECT_HOME}/main.py $1
 fi

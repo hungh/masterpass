@@ -1,6 +1,7 @@
 from master.mimecontroller.mime_controller import MimeController
 from master.sesscontroller.session_controller import SessionController
 from master.logger.file_logger import logger
+from master.consts import PROJECT_HOME
 from abc import ABCMeta, abstractmethod
 from urllib.parse import urlparse, parse_qs
 import cgi
@@ -20,7 +21,7 @@ class BaseHttpController():
 
     @staticmethod
     def get_resource():
-        return os.getcwd() + '/../resources'
+        return PROJECT_HOME + '/resources'
 
     def process(self):
         """
@@ -48,6 +49,7 @@ class BaseHttpController():
             return
 
         file_full_path = BaseHttpController.get_resource() + self.request_handler.path
+        logger().info('file_full_path=' + file_full_path)
         try:
             f = open(file_full_path)
         except FileNotFoundError:
