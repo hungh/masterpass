@@ -1,1 +1,5 @@
+build/
+MasterPswrd.egg-info/
+logs/
+persist/
 *.pyc

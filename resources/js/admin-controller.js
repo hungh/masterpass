@@ -16,15 +16,6 @@ var adminApp = angular.module('admin-app', [])
 			alert(err_msg);
 		});		
 
-		/*$scope.users = [
-			{id: 'hung2', first: 'Hung', last: 'Huynh'},
-			{id: 'hung3', first: 'Tren', last: 'Huynh'},
-			{id: 'hun42', first: 'Long', last: 'Nguyen'},
-			{id: 'hung5', first: 'Sna', last: 'Collin'},
-			{id: 'hung34', first: 'Tong', last: 'William'},
-			{id: 'hung12', first: 'Theredoor', last: 'Phan'}			
-		];*/
-
 		$scope.memus = ['addUserId', 'removeUserId', 'updateUserId'];		
 
 		$scope.switchMenu = function(elemId){
@@ -45,7 +36,7 @@ var adminApp = angular.module('admin-app', [])
 			    method: 'POST',
 			    url: '/user/add',
 			    transformRequest: transformReq,
-			    data: {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword},
+			    data: {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast},
 			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
 			}).success(function(status){
 				alert(status);
@@ -84,8 +75,7 @@ var adminApp = angular.module('admin-app', [])
 			});			
 		};
 
-		$scope.deleteUser = function(uid){		
-			//$scope.users
+		$scope.deleteUser = function(uid){					
 			var ans = $window.confirm('Are you sure you want to delete :' + uid);
 			if (ans == true){
 				// TODO: send delete command to server
