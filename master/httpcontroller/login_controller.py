@@ -41,7 +41,6 @@ class LoginController(BaseHttpController):
 
     @staticmethod
     def is_valid_user(user_id, password_str):
-        logger().info('Login=' + str(user_id) + ';password=' + str(password_str) + ';')# REMOVE ME
         if user_id is None or password_str is None:
             return False
         try:
