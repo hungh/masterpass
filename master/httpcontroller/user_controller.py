@@ -39,7 +39,7 @@ class UserController(ActionController):
         return session_bean.get_attribute(SESSION_USER_ID)
 
     def change_password(self, current_login_id):
-        self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.password, bcrypt.gensalt()))
+        self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
 
     def get_user(self):
         """
@@ -66,6 +66,9 @@ class UserController(ActionController):
     def delete_user(self):
         if not self.is_root():
             return None
+        # you can not delete root himself
+        if self.id == 'root':
+            return 'Error:root user cannot be deleted.'
         self.user_store.delete_user_by_id(self.id)
         self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
 

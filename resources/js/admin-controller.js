@@ -36,7 +36,7 @@ var adminApp = angular.module('admin-app', [])
 			    url: '/user/add',
 			    transformRequest: transformReq,
 			    data: newUser,
-			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			    headers: glb_formHeader
 			}).success(function(status){
 				$scope.users.push(newUser);
 				alert(status);
@@ -53,7 +53,7 @@ var adminApp = angular.module('admin-app', [])
 			    url: '/user/update',
 			    transformRequest: transformReq,
 			    data: {id: uid, first: first, last: first},
-			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			    headers: glb_formHeader
 			}).success(function(status){
 				alert(status);
 				var isNew = true;
@@ -76,6 +76,10 @@ var adminApp = angular.module('admin-app', [])
 		};
 
 		$scope.deleteUser = function(uid){					
+			if (uid == 'root'){
+				$window.alert('root user cannot be deleted.');
+				return;
+			}
 			var ans = $window.confirm('Are you sure you want to delete :' + uid);
 			if (ans == true){
 				var httpResponse = $http({
@@ -94,15 +98,8 @@ var adminApp = angular.module('admin-app', [])
 				});						
 			}
 		};
-
+		
 	}]);
 
 
-adminApp.factory('transformReq', function(){
-	return function transformRequest(obj){
-		var str = [];
-        for(var p in obj)
-        	str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        return str.join("&");		
-	};
-});
+adminApp.factory('transformReq', glb_postTransformFnc);
