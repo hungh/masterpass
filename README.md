@@ -13,6 +13,8 @@ IMPORTANT:
 * All users passwords are hashed with bcrypt.
 * Each data entry (which is a user name and password pair) belonging to a login user is encrypted
   with password entry as key using BlowFish
+* Default root password to enter the application is 'password', once you log in as root you must change
+  your password.
  
 
 REQUIREMENTS:
@@ -53,8 +55,11 @@ INSTALLATION:
 * under 'masterpass', change the following values in the consts.py file for your need:
 
   USER_HOME = '/home/dir/'
+
   PROJECT_HOME = '/home/dir/masterpass'  
+
   DB_USERS_LOCATION = '/home/dir/data/db/users.db'  
+
   DB_SERVER_PORT = 27017
 
 * To start mongodb:
@@ -72,9 +77,11 @@ START/STOP SERVER:
 * To start server:
 
   From project home masterpass, type
+
   ./bin/start_server.sh port_number
 
   ./bin/stop_server.sh port_number 
+
   to stop
 
 
