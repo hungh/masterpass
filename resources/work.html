@@ -15,6 +15,7 @@
   <title>Secure Storage</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/app.css">
+  <script src="/js/common/app-util.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   <script src="/js/controller.js"></script>
  </head>
@@ -28,8 +29,10 @@
                 <li class="active">              
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Menu <span class="caret"></span></a>
                   <ul class="dropdown-menu">                
+                    <li><a href ng-click="switchMenu('workAreaId')"><span class="glyphicon glyphicon-home"></span> Main</a></li>
                     <li><a href="/changepw.html"><span class="glyphicon glyphicon-repeat"></span> Change Password</a></li>
                     <li><a href="{{getAdminLink()}}"><span class="glyphicon glyphicon-download"></span> Admin Console</a></li>
+                    <li><a href ng-click="switchMenu('changeEnvId')"><span class="glyphicon glyphicon-cloud"></span> Creat new env</a></li>
                     <li><a href="/about.html"><span class="glyphicon glyphicon-user"></span> About Author</a></li>
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>                        
                   </ul>
@@ -41,42 +44,56 @@
           <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
       </div>
 
-      <div class="jumbotron main modal-body">      
-              <div class="first-column">
-                <strong>Retrieve and Update</strong><br>      
-                <small class="text-left">Select user:</small>
-                <select class="form-control"  ng-model="currUser" ng-options="user.name group by user.env for user in users">
-                </select> 
-                <br>
-                <button class="btn btn-primary" ng-click="getUserPassword()">
-                  Retrieve Password
-                </button>
-                <br>
-                <br>
-                <input type="text" class="mtext" ng-model="currUser.password"></input><br><br>              
-                <button class="btn btn-primary" ng-click="updateUserPassword()">
-                  Update Password
-                </button>
-            </div>
+      <div class="jumbotron main modal-body">  
+            <div style="display:block" id="workAreaId">    
+                <div class="first-column">
+                  <strong>Retrieve and Update</strong><br>      
+                  <small class="text-left">Select user:</small>
+                  <select class="form-control"  ng-model="currUser" ng-options="user.name group by user.env for user in users">
+                  </select> 
+                  <br>
+                  <button class="btn btn-primary" ng-click="getUserPassword()">
+                    Retrieve Password
+                  </button>
+                  <br>
+                  <br>
+                  <input type="text" class="mtext" ng-model="currUser.password"></input><br><br>              
+                  <button class="btn btn-primary" ng-click="updateUserPassword()">
+                    Update Password
+                  </button>
+              </div>
 
-            <div class="second-column">
-              <strong>Create new</strong><br>      
-              <small>Select environment:</small>
-              <select class="form-control"  ng-model="currEnviron" ng-options="environ as environ for environ in environs">
-              </select>
-              <br>
-              <small>User name:</small>
-              <input type="text" class="mtext" ng-model="username">
-              <br>
-              <br>
-              <small>Password:</small>
-              <input type="password" class="mtext" ng-model="password">
-              <br><br>
-              <button class="btn btn-primary" ng-click="savePassword()">Save Password</button>
-            </div>
+              <div class="second-column">
+                <strong>Create new</strong><br>      
+                <small>Select environment:</small>
+                <select class="form-control"  ng-model="currEnviron" ng-options="environ as environ for environ in environs">
+                </select>
+                <br>
+                <small>User name:</small>
+                <input type="text" class="mtext" ng-model="username">
+                <br>
+                <br>
+                <small>Password:</small>
+                <input type="password" class="mtext" ng-model="password">
+                <br><br>
+                <button class="btn btn-primary" ng-click="savePassword()">Save Password</button>
+              </div>
+          </div>        
+        </div>
      </div>
-  </div>
-</div>
+
+     <div ng-controller="newEnvionController">      
+       <div class="jumbotron main modal-body" style="display:none" id="changeEnvId">
+            <div class="form-group">
+               <label for="newEnv">Environment name:</label>
+               <input type="strong" class="form-control" ng-model="newEnviron" id="newEnv">
+            </div>
+            <button type="submit" class="btn btn-primary" ng-click="createNewEnv()">Save</button>
+      </div>
+    </div>
+
+  </div> <!--main app-->
+
  </body>
 </html>
 

@@ -25,3 +25,6 @@ class PwsController(ActionController):
     def update_user(self, user):
         self.write_one_response(str_msg="OK update a pws.", all_cookies=[self._jsession_cookie])
         return None
+
+    def other_action_mappings(self, action):
+        pass

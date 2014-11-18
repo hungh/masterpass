@@ -9,6 +9,15 @@ class PwsStore:
         self.db = self.client.pws
         self.db.pws_col.ensure_index([('owner', ASCENDING), ('login', ASCENDING)], unique=True)
 
+    def insert_new_env(self, env_string):
+        self.db.env_col.insert({'id': env_string})
+
+    def get_all_env(self):
+        all_env = []
+        for env in self.db.env_col:
+            all_env.append(env['id'])
+        return all_env
+
     def insert_new_pws(self, pws_object):
         self.db.pws_col.insert(pws_object.to_json())
 

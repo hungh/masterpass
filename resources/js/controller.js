@@ -1,6 +1,6 @@
-angular.module('main', [])
-	.controller('loginController', ['$scope', '$http', function($scope, $http){	
-		$scope.environs = ["DEV", "UAT", "STAGE", "PROD"];
+var mainApp = angular.module('main', []);
+
+mainApp.controller('loginController', ['$scope', '$http', '$window', 'environService', function($scope, $http, $window, environService){			
 		$scope.users = [
 			{name: 'hung', env: 'DEV'},
 			{name: 'emma', env: 'STAGE'},
@@ -16,6 +16,8 @@ angular.module('main', [])
 
 		$scope.currUser = $scope.users[0];
 		$scope.currEnviron = 'DEV';
+		$scope.newEnviron = '';
+		$scope.environs = []; // TODO: retrieve from database
 
 		$http({
 			    method: 'GET',
@@ -37,11 +39,52 @@ angular.module('main', [])
 
 		$scope.updateUserPassword = function(){
 			alert('');
-		}
+		};
 
 		$scope.getAdminLink = function(){
 			if ($scope.current_login == 'root')
 				return "/admin.html";
 			return '#';
-		}
+		};
+		
+		$scope.$on('envChange', function(event, data) {				
+        	$scope.environs.push(data);
+       	});
+
+		$scope.memus = ['workAreaId', 'changeEnvId'];
+
+       	$scope.switchMenu = function(elemId){
+			angular.forEach($scope.memus, function(elementId, index){
+				if (elementId == elemId) {
+					document.getElementById(elementId).style.display = 'block';		
+				}else {
+					document.getElementById(elementId).style.display = 'none';
+				}
+			});
+			
+		};
+    
+		
 	}]);
+
+mainApp.controller('newEnvionController', ['$scope', '$window', 'environService', function($scope, $window, environService){
+
+	$scope.createNewEnv = function(){			
+		if ($scope.newEnviron != ''){						
+			environService.push($scope.newEnviron);			 
+			$window.alert($scope.newEnviron + ' is created. Please navigate back to Main menu to add user entry.');
+		}else{
+			$window.alert('Please enter the environment name.');
+		}	
+		//TODO: SAVE ENV INTO DB		
+	};
+
+}]);
+
+mainApp.factory('environService', function($rootScope){		
+	return {
+		push: function(data){			
+			$rootScope.$broadcast('envChange', data);;
+		}		
+	};
+});
