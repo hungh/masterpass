@@ -45,19 +45,27 @@ class UserController(ActionController):
         """
         Get all users
         """
+        if not self.is_root():
+            return None
         all_user = self.user_store.get_all_users()
         self.write_one_response(str_msg=json.dumps(all_user), all_cookies=[self._jsession_cookie])
 
     def add_user(self):
+        if not self.is_root():
+            return None
         hashpw = bcrypt.hashpw(self.password, bcrypt.gensalt())
         self.user_store.insert_new_user(User(self.id, self.first, self.last, hashpw, False))
         self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
 
     def update_user(self):
+        if not self.is_root():
+            return None
         self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
         self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
 
     def delete_user(self):
+        if not self.is_root():
+            return None
         self.user_store.delete_user_by_id(self.id)
         self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
 
@@ -71,4 +79,9 @@ class UserController(ActionController):
             else:
                 return "Failed to change password"
 
-
+    def is_root(self):
+        """
+        Return True if user is root
+        :return: boolean
+        """
+        return 'root' == self.get_current_login_user_id()
