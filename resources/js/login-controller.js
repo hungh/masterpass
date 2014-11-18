@@ -1,23 +1,26 @@
 /** login controller */
 
-angular.module('login-app', [])
-	.controller('loginController', ['$scope', '$http', function($scope, $http){		
+var loginApp = angular.module('login-app', [])
+	.controller('loginController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){		
+
 		$scope.login_submit = function(){
+
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/login',
-			    transformRequest: function(obj) {
-			        var str = [];
-			        for(var p in obj)
-			        	str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-			        return str.join("&");
-			    },
+			    transformRequest: transformReq,
 			    data: {login: $scope.login, password: $scope.password},
-			    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-			}).success(function(redirect){
-				document.location.href= redirect;
+			    headers: glb_formHeader
+
+			}).success(function(jsonData){												
+				if (jsonData.stat === true){
+					document.location.href= jsonData.msg;	
+				}else{
+					$window.alert('Error:' + jsonData.msg);
+				}				
+
 			}).error(function(err_msg){
-				alert(err_msg);
+				$window.alert('Error: '+  err_msg);
 			});	
 		}
 
@@ -28,3 +31,5 @@ angular.module('login-app', [])
 			return "off";			
 		}		
 	}]);
+
+loginApp.factory('transformReq', glb_postTransformFnc);
