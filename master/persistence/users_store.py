@@ -54,6 +54,9 @@ class UserStore:
     def update_user_by_id(self, user):
         self.db.users_col.update({"uid": user.uid}, {"$set": {"first": user.first, "last": user.last}})
 
+    def update_user_with_hash(self, uid, hash_pw):
+        self.db.users_col.update({"uid": uid}, {"$set": {"hash_pw": hash_pw}})
+
     def delete_user_by_id(self, user_uid):
         self.db.users_col.remove({"uid": user_uid})
 

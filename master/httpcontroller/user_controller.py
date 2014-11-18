@@ -1,6 +1,7 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
 from master.sesscontroller.session_controller import SessionController
+from master.httpcontroller.login_controller import LoginController
 from master.consts import SESSION_USER_ID, CURRENT_USER_ACTION, CHANGE_PW_ACTION
 from master.beans.users import User
 import bcrypt
@@ -37,9 +38,8 @@ class UserController(ActionController):
         session_bean, was_created_new = SessionController().get_session(self.request_handler, will_create_new=False)
         return session_bean.get_attribute(SESSION_USER_ID)
 
-    def change_password(self):
-        #TODO:
-        return False
+    def change_password(self, current_login_id):
+        self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.password, bcrypt.gensalt()))
 
     def get_user(self):
         """
@@ -53,8 +53,8 @@ class UserController(ActionController):
     def add_user(self):
         if not self.is_root():
             return None
-        hashpw = bcrypt.hashpw(self.password, bcrypt.gensalt())
-        self.user_store.insert_new_user(User(self.id, self.first, self.last, hashpw, False))
+        hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
+        self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
         self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
 
     def update_user(self):
@@ -70,14 +70,15 @@ class UserController(ActionController):
         self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
 
     def other_action_mappings(self, action):
+        current_login_id = self.get_current_login_user_id()
+
         if action == CURRENT_USER_ACTION:
-            current_login_id = self.get_current_login_user_id()
             self.write_one_response(str_msg=str(current_login_id), all_cookies=[self._jsession_cookie])
         elif action == CHANGE_PW_ACTION:
-            if self.change_password():
-                self.write_one_response(str_msg="Your password was changed.", all_cookies=[self._jsession_cookie])
-            else:
-                return "Failed to change password"
+            if not LoginController.is_valid_user(current_login_id, self.password):
+                return "Incorrect password provided"
+            self.change_password(current_login_id)
+            self.write_one_response(str_msg="Your password was changed.", all_cookies=[self._jsession_cookie])
 
     def is_root(self):
         """
