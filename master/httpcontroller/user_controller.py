@@ -78,4 +78,4 @@ class UserController(ActionController):
         Return True if user is root
         :return: boolean
         """
-        return 'root' == self.get_current_login_user_id()
+        return 'root' == self.current_login_id

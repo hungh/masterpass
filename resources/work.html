@@ -49,7 +49,7 @@
                 <div class="first-column">
                   <strong>Retrieve and Update</strong><br>      
                   <small class="text-left">Select user:</small>
-                  <select class="form-control"  ng-model="currUser" ng-options="user.name group by user.env for user in users">
+                  <select class="form-control"  ng-model="currUser" ng-options="user.login group by user.env_name for user in users">
                   </select> 
                   <br>
                   <button class="btn btn-primary" ng-click="getUserPassword()">

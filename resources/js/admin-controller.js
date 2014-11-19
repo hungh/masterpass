@@ -75,7 +75,8 @@ var adminApp = angular.module('admin-app', [])
 			});			
 		};
 
-		$scope.deleteUser = function(uid){					
+		$scope.deleteUser = function(uid){				
+			//TODO: delete all pws entries reloaed to this user	
 			if (uid == 'root'){
 				$window.alert('root user cannot be deleted.');
 				return;

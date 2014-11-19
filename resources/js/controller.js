@@ -1,53 +1,79 @@
 var mainApp = angular.module('main', []);
 
-mainApp.controller('loginController', ['$scope', '$http', '$window', 'environService', function($scope, $http, $window, environService){			
-		$scope.users = [
-			{name: 'hung', env: 'DEV'},
-			{name: 'emma', env: 'STAGE'},
-			{name: 'tinh', env: 'DEV'},
-			{name: 'thao', env: 'UAT'},
-			{name: 'ngoc', env: 'DEV'},
-			{name: 'tuy', env: 'PROD'},
-			{name: 'emily', env: 'STAGE'},
-			{name: 'tam', env: 'PROD'},
-			{name: 'loan', env: 'STAGE'},
-			{name: 'phuong', env: 'UAT'},
-		];		
-
+mainApp.controller('loginController', ['$scope', '$http', '$window', 'environService', 'transformReq',
+	 function($scope, $http, $window, environService, transformReq){			
+		$scope.users = [];		
 		$scope.currUser = $scope.users[0];
 		$scope.currEnviron = 'DEV';
 		$scope.newEnviron = '';
 		$scope.environs = []; 
 
-		$http({
-			    method: 'GET',
-			    url: '/env/get',
-		}).success(function(all_env){
-			$scope.environs = all_env;
-		}).error(function(err_msg){
-			$window.alert(err_msg);
-		});		
+		var httpCall = function(method, urlStr, postData, callback, transformReq){
+			if(method == 'GET'){
+				$http({
+			    	method: 'GET',
+			    	url: urlStr,
+				}).success(function(data){
+					callback.call(this, data);
+				}).error(function(err_msg){
+					$window.alert('Error:' + err_msg);
+				});			
+			}else if (method == 'POST'){
+				$http({
+				    method: 'POST',
+				    url: urlStr,
+				    transformRequest: transformReq,			    
+				    data: postData,
+				    headers: glb_formHeader				    
+				}).success(function(data){
+					callback.call(this, data)
+				}).error(function(err_msg){
+				  	$window.alert('Error:' + err_msg);
+				});
+			}		
+		}
 
-		$http({
-			    method: 'GET',
-			    url: '/user/current',
-		}).success(function(login_uid){
-			$scope.current_login = login_uid;
-		}).error(function(err_msg){
-			$window.alert(err_msg);
-		});		
+		httpCall('GET', '/env/get', {}, function(data){
+			$scope.environs = data;
+		});
+
+		httpCall('GET', '/user/current', {}, function(data){
+			$scope.current_login = data;
+		});
+
+		httpCall('POST', '/pws/pwsowner', {}, function(data){
+			if (data.stat){
+				$scope.users = data.msg;
+			}else {
+				$window.alert(data.msg);
+			}
+		}, transformReq);
 
 		/** functions */
-		$scope.getUserPassword = function(){			
-			$scope.currUser.password = "sfas";
+		$scope.getUserPassword = function(){
+			httpCall('POST', '/pws/get', {user: $scope.currUser.login, env: $scope.currUser.env_name}, function(data){
+				if (data.stat){
+					$scope.currUser.password = data.msg;
+				}else {
+					$window.alert(data.msg);
+				}
+			}, transformReq);	
 		};
 
 		$scope.savePassword = function(){
-			alert("Saving...:" + $scope.username  + ";with password:" + $scope.password);
+			httpCall('POST', '/pws/add', {user: $scope.username, env: $scope.currEnviron, password: $scope.password}, function(data){
+				if (data.stat){
+					$scope.users.push({env_name: $scope.currEnviron, login: $scope.username})
+				}
+				$window.alert('Server:' + data.msg);
+			}, transformReq);				
 		};
 
 		$scope.updateUserPassword = function(){
-			alert('');
+
+			httpCall('POST', '/pws/update', {user: $scope.currUser.login, env: $scope.currUser.env_name, password: $scope.currUser.password}, function(data){
+				$window.alert('Server:' + data.msg);
+			}, transformReq);			
 		};
 
 		$scope.getAdminLink = function(){
@@ -71,8 +97,7 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 				}
 			});
 			
-		};
-    
+		};    
 		
 	}]);
 
@@ -107,3 +132,5 @@ mainApp.factory('environService', function($rootScope){
 		}		
 	};
 });
+
+mainApp.factory('transformReq', glb_postTransformFnc);
