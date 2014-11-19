@@ -65,14 +65,12 @@ class UserController(ActionController):
         self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
 
     def other_action_mappings(self, action):
-        current_login_id = self.get_current_login_user_id()
-
         if action == CURRENT_USER_ACTION:
-            self.write_one_response(str_msg=str(current_login_id), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=str(self.current_login_id), all_cookies=[self._jsession_cookie])
         elif action == CHANGE_PW_ACTION:
-            if not LoginController.is_valid_user(current_login_id, self.password):
+            if not LoginController.is_valid_user(self.current_login_id, self.password):
                 return "Incorrect password provided"
-            self.change_password(current_login_id)
+            self.change_password(self.current_login_id)
             self.write_one_response(str_msg="Your password was changed.", all_cookies=[self._jsession_cookie])
 
     def is_root(self):

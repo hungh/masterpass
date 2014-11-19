@@ -1,3 +1,6 @@
+from master.encryption.encrypt_bfish import MyBlowFish
+from master.sesscontroller.session_controller import SessionController
+from master.consts import SESSION_USER_ID
 import json
 
 
@@ -9,3 +12,38 @@ def create_json_status(bool_stat, message):
     :return: json string format
     """
     return json.dumps({'stat': bool_stat, 'msg': message})
+
+
+def gen_enc_string(env, user, password, owner):
+    """
+    Get encrypted string of a pws entry of an owner
+    :param env: string environment name
+    :param user: string user of an pws entry
+    :param password: string (clear text)
+    :param owner: string current log-in user
+    :return: string encrypted string
+    """
+    enc_key = env + user + owner
+    return MyBlowFish(enc_key).encrypt(password)
+
+
+def get_clear_text(env, user, pws_entry, owner):
+    """
+    Get clear text of an pws entry
+    :param env: string environment name
+    :param user: string user of a pws entry
+    :param pws_entry: master.beans.pws_entries.PwsEntry
+    :param owner: string current log-in user id
+    :return: clear text of password entry (in a pws)
+    """
+    password_entry = MyBlowFish(env + user + owner).decrypt(pws_entry.enc)
+    return password_entry.decode('utf-8')
+
+
+def get_current_login_user_id(request_handler):
+    """
+    Return the current login id in HTTP session
+    :param request_handler: master.handler.CustomHTTPHandler (http.server.SimpleHTTPRequestHandler)
+    """
+    session_bean, was_created_new = SessionController().get_session(request_handler, will_create_new=False)
+    return session_bean.get_attribute(SESSION_USER_ID)
