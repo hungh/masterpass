@@ -17,7 +17,16 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		$scope.currUser = $scope.users[0];
 		$scope.currEnviron = 'DEV';
 		$scope.newEnviron = '';
-		$scope.environs = []; // TODO: retrieve from database
+		$scope.environs = []; 
+
+		$http({
+			    method: 'GET',
+			    url: '/env/get',
+		}).success(function(all_env){
+			$scope.environs = all_env;
+		}).error(function(err_msg){
+			$window.alert(err_msg);
+		});		
 
 		$http({
 			    method: 'GET',
@@ -25,7 +34,7 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		}).success(function(login_uid){
 			$scope.current_login = login_uid;
 		}).error(function(err_msg){
-			alert(err_msg);
+			$window.alert(err_msg);
 		});		
 
 		/** functions */
@@ -67,16 +76,26 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		
 	}]);
 
-mainApp.controller('newEnvionController', ['$scope', '$window', 'environService', function($scope, $window, environService){
+mainApp.controller('newEnvionController', ['$scope', '$window', '$http', 'environService', function($scope, $window, $http, environService){
 
 	$scope.createNewEnv = function(){			
-		if ($scope.newEnviron != ''){						
-			environService.push($scope.newEnviron);			 
-			$window.alert($scope.newEnviron + ' is created. Please navigate back to Main menu to add user entry.');
+		if ($scope.newEnviron != ''){									
+			$http({
+			    method: 'GET',
+			    url: '/env/add?env=' + $scope.newEnviron			    
+			}).success(function(data){
+				if (data.stat){
+					environService.push($scope.newEnviron);			 				
+				}
+				$window.alert(data.msg);	
+				
+			}).error(function(err_msg){
+				$window.alert('Error' + err_msg);
+			});		
+			
 		}else{
 			$window.alert('Please enter the environment name.');
-		}	
-		//TODO: SAVE ENV INTO DB		
+		}			
 	};
 
 }]);

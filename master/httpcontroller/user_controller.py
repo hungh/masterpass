@@ -41,7 +41,7 @@ class UserController(ActionController):
     def change_password(self, current_login_id):
         self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
 
-    def get_user(self):
+    def get(self):
         """
         Get all users
         """
@@ -50,20 +50,20 @@ class UserController(ActionController):
         all_user = self.user_store.get_all_users()
         self.write_one_response(str_msg=json.dumps(all_user), all_cookies=[self._jsession_cookie])
 
-    def add_user(self):
+    def add(self):
         if not self.is_root():
             return None
         hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
         self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
         self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
 
-    def update_user(self):
+    def update(self):
         if not self.is_root():
             return None
         self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
         self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
 
-    def delete_user(self):
+    def delete(self):
         if not self.is_root():
             return None
         # you can not delete root himself

@@ -4,6 +4,7 @@ from master.httpcontroller.base_controller import BaseHttpController
 from master.httpcontroller.redirect_controller import RedirectController
 from master.httpcontroller.user_controller import UserController
 from master.httpcontroller.pws_controller import PwsController
+from master.httpcontroller.env_controller import EnvController
 from master.logger.file_logger import logger
 from urllib.parse import urlparse
 import re
@@ -40,6 +41,8 @@ def getHttpController(pylet_path, request_handler):
     user_op_match, user_action = get_action_match('user', pylet)
     # pws operations controller
     pws_op_match, pws_action = get_action_match('pws', pylet)
+    # env operations controller
+    env_op_match, env_action = get_action_match('env', pylet)
 
     logger().info('pylet=' + pylet + ';')
 
@@ -55,5 +58,7 @@ def getHttpController(pylet_path, request_handler):
         return UserController(request_handler, user_action)
     elif pws_op_match:
         return PwsController(request_handler, pws_action)
+    elif env_op_match:
+        return EnvController(request_handler, env_action)
 
     return BaseHttpController(request_handler)

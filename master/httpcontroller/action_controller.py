@@ -25,43 +25,42 @@ class ActionController(BaseHttpController):
         logger().info('user action =' + self._action)
         self._jsession_cookie = SessionController.get_jsession_cookie(self.request_handler)
         #< err is string >#
-        err = None
         if self._action == ADD_ACTION:
-            err = self.add_user()
+            err = self.add()
         elif self._action == GET_ACTION:
-            err = self.get_user()
+            err = self.get()
         elif self._action == UPDATE_ACTION:
-            err = self.update_user()
+            err = self.update()
         elif self._action == DELETE_ACTION:
-            err = self.delete_user()
+            err = self.delete()
         else:
             err = self.other_action_mappings(self._action)
         if err:
             self.write_one_response(str_msg=err, all_cookies=[self._jsession_cookie])
 
     @abstractmethod
-    def get_user(self):
+    def get(self):
         """
         :return: error string or None
         """
         pass
 
     @abstractmethod
-    def add_user(self):
+    def add(self):
         """
         :return: error string or None
         """
         pass
 
     @abstractmethod
-    def update_user(self):
+    def update(self):
         """
         :return: error string or None
         """
         pass
 
     @abstractmethod
-    def delete_user(self):
+    def delete(self):
         """
         Delete user
         """
