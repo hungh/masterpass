@@ -1,7 +1,7 @@
 from master.mimecontroller.mime_controller import MimeController
 from master.sesscontroller.session_controller import SessionController
 from master.logger.file_logger import logger
-from master.consts import PROJECT_HOME
+from master.consts import RESOURCES_HOME
 from abc import ABCMeta, abstractmethod
 from urllib.parse import urlparse, parse_qs
 import cgi
@@ -21,7 +21,7 @@ class BaseHttpController():
 
     @staticmethod
     def get_resource():
-        return PROJECT_HOME + '/resources'
+        return RESOURCES_HOME
 
     def process(self):
         """

@@ -1,5 +1,3 @@
-/** admin controller (add, update and delete) a user */
-
 /** login controller */
 
 var adminApp = angular.module('admin-app', [])

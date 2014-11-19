@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "Please make sure you start MongoDB.";
+echo "And have mongod listening port configured in master.consts.py";
 
 if [ "$#" -ne 1 ] ; then
    echo "please pass a port number";

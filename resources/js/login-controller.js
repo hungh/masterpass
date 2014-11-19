@@ -1,5 +1,4 @@
 /** login controller */
-
 var loginApp = angular.module('login-app', [])
 	.controller('loginController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){		
 

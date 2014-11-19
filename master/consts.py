@@ -1,7 +1,8 @@
-USER_HOME = '/usr/local/tmc'
-PROJECT_HOME = '/usr/local/tmc/masterpass'
+from os.path import expanduser
+
+USER_HOME = expanduser("~")
+RESOURCES_HOME = USER_HOME + '/masterpass/resources'
 SESSION_TIMEOUT = 180000
-DB_USERS_LOCATION = '/usr/local/tmc/PycharmProjects/MasterPswrd/persist/users.db'
 USER_ID = "id"
 USER_FIRST_NAME = "first"
 USER_LAST_NAME = "last"
@@ -16,4 +17,4 @@ GET_ACTION = "get"
 ADD_ACTION = "add"
 UPDATE_ACTION = "update"
 DELETE_ACTION = "delete"
-DEFAULT_PORT=8009
+DEFAULT_PORT = 8009
