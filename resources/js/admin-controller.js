@@ -45,14 +45,13 @@ var adminApp = angular.module('admin-app', [])
 			});			
 		}
 
-		$scope.saveUser = function(uid, first, last){
-			$window.alert("The following user with ID:" + uid + "\nFirst name:" + first + "\nLast name:" + last + 'will be updated to server');
+		$scope.saveUser = function(){			
 
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/user/update',
 			    transformRequest: transformReq,
-			    data: {id: uid, first: first, last: first},
+			    data: {id: $scope.selectedUser.id, first: $scope.selectedUser.first, last: $scope.selectedUser.last},
 			    headers: glb_formHeader
 			}).success(function(status){
 				alert(status);
