@@ -1,5 +1,6 @@
-from master.logger.file_logger import logger
 from master.boostrap.db_client import SingleDBClient
+from master.persistence.pws_store import PwsStore
+from master.logger.file_logger import logger
 from pymongo import ASCENDING
 
 
@@ -59,6 +60,7 @@ class UserStore:
 
     def delete_user_by_id(self, user_uid):
         self.db.users_col.remove({"uid": user_uid})
+        PwsStore().delete_pws_by_owner(user_uid)
 
     def get_total_users(self):
         return self.db.users_col.count()

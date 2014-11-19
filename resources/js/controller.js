@@ -97,8 +97,8 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 				}
 			});
 			
-		};    
-		
+		};  
+
 	}]);
 
 mainApp.controller('newEnvionController', ['$scope', '$window', '$http', 'environService', function($scope, $window, $http, environService){
