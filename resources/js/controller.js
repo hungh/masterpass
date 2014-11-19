@@ -31,7 +31,7 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 				  	$window.alert('Error:' + err_msg);
 				});
 			}		
-		}
+		};
 
 		httpCall('GET', '/env/get', {}, function(data){
 			$scope.environs = data;
@@ -50,7 +50,11 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		}, transformReq);
 
 		/** functions */
-		$scope.getUserPassword = function(){
+		$scope.getUserPassword = function(){			
+			if(!$scope.currUser || !$scope.currUser.login || !$scope.currUser.env_name ){
+				$window.alert('Please select an entry from drop down');
+				return;
+			}
 			httpCall('POST', '/pws/get', {user: $scope.currUser.login, env: $scope.currUser.env_name}, function(data){
 				if (data.stat){
 					$scope.currUser.password = data.msg;
@@ -61,6 +65,19 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		};
 
 		$scope.savePassword = function(){
+			if (!$scope.username){
+				$window.alert('Please enter user name');
+				return;
+			}
+			if(!$scope.currEnviron){
+				$window.alert('Please select an environment');
+				return;	
+			}
+			if(!$scope.password){
+				$window.alert('Please enter password entry');
+				return;	
+			}
+
 			httpCall('POST', '/pws/add', {user: $scope.username, env: $scope.currEnviron, password: $scope.password}, function(data){
 				if (data.stat){
 					$scope.users.push({env_name: $scope.currEnviron, login: $scope.username})
@@ -70,7 +87,9 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		};
 
 		$scope.updateUserPassword = function(){
-
+			if(!$scope.currUser || !$scope.currUser.login){
+				return;
+			}
 			httpCall('POST', '/pws/update', {user: $scope.currUser.login, env: $scope.currUser.env_name, password: $scope.currUser.password}, function(data){
 				$window.alert('Server:' + data.msg);
 			}, transformReq);			
