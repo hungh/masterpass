@@ -4,8 +4,8 @@ from master.sesscontroller.session_controller import SessionController
 from master.persistence.users_store import UserStore
 from master.consts import SESSION_USER_ID
 from master.logger.file_logger import logger
+from master.util import create_json_status
 import bcrypt
-import json
 
 
 class LoginController(BaseHttpController):
@@ -35,10 +35,10 @@ class LoginController(BaseHttpController):
                 logger().info('user is authenticated.')
                 if is_new_jsession is True:
                     jsession_cookie = CookieHandler.create_new_cookie('JSESSIONID', new_http_session.session_id, '/')
-                self.write_one_response(str_msg=json.dumps({'stat': True, 'msg': '/work.html'}), all_cookies=[jsession_cookie])
+                self.write_one_response(str_msg=create_json_status(True, '/work.html'), all_cookies=[jsession_cookie])
 
         else:
-            self.write_one_response(str_msg=json.dumps({'stat': False, 'msg': 'Failed to authenticate'}))
+            self.write_one_response(str_msg=create_json_status(False, 'Failed to authenticate'))
 
     @staticmethod
     def is_valid_user(user_id, password_str):

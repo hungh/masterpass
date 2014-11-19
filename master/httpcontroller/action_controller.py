@@ -1,7 +1,7 @@
 from master.httpcontroller.base_controller import BaseHttpController
 from master.sesscontroller.session_controller import SessionController
 from master.logger.file_logger import logger
-from master.consts import ADD_ACTION, UPDATE_ACTION, GET_ACTION, DELETE_ACTION
+from master.consts import ADD_ACTION, UPDATE_ACTION, GET_ACTION, DELETE_ACTION, SESSION_USER_ID
 from abc import ABCMeta, abstractmethod
 
 
@@ -20,6 +20,13 @@ class ActionController(BaseHttpController):
 
     def control(self):
         pass
+
+    def get_current_login_user_id(self):
+        """
+        Return the current login id in HTTP session
+        """
+        session_bean, was_created_new = SessionController().get_session(self.request_handler, will_create_new=False)
+        return session_bean.get_attribute(SESSION_USER_ID)
 
     def write_body(self):
         logger().info('user action =' + self._action)

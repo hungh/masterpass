@@ -1,8 +1,7 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
-from master.sesscontroller.session_controller import SessionController
 from master.httpcontroller.login_controller import LoginController
-from master.consts import SESSION_USER_ID, CURRENT_USER_ACTION, CHANGE_PW_ACTION
+from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION
 from master.beans.users import User
 import bcrypt
 import json
@@ -30,13 +29,6 @@ class UserController(ActionController):
         self.last = self.get_request_parameter('last')
         self.password = self.get_request_parameter('password')
         self.new_password = self.get_request_parameter('new_password')
-
-    def get_current_login_user_id(self):
-        """
-        Return the current login id in HTTP session
-        """
-        session_bean, was_created_new = SessionController().get_session(self.request_handler, will_create_new=False)
-        return session_bean.get_attribute(SESSION_USER_ID)
 
     def change_password(self, current_login_id):
         self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))

@@ -1,7 +1,8 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.env_store import EnvStore
-import pymongo
+from master.util import create_json_status
 import json
+import pymongo
 
 
 class EnvController(ActionController):
@@ -24,8 +25,8 @@ class EnvController(ActionController):
         try:
             self.env_store.insert_new_env(self.env)
         except pymongo.errors.DuplicateKeyError:
-            return json.dumps({'stat': False, 'msg': 'Duplicate environment.'})
-        self.write_one_response(str_msg=json.dumps({'stat': True, 'msg': 'Environment added.'}), all_cookies=[self._jsession_cookie])
+            return create_json_status(False, 'Duplicate environment.')
+        self.write_one_response(str_msg=create_json_status(True, 'Environment added.'), all_cookies=[self._jsession_cookie])
 
     def update(self):
         pass
