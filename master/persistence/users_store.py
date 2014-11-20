@@ -27,9 +27,7 @@ class UserStore:
         """
         one_record = self.db.users_col.find_one({"uid": user_id})
         if one_record is not None:
-            _hashpw = one_record['hash_pw']
-            logger().info('hashpw-user[=' + _hashpw)
-            return _hashpw
+            return one_record['hash_pw']
         else:
             logger().warn('Unable to find record of user_id:' + user_id)
         return None
