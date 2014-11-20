@@ -123,7 +123,7 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 mainApp.controller('newEnvionController', ['$scope', '$window', '$http', 'environService', function($scope, $window, $http, environService){
 
 	$scope.createNewEnv = function(){			
-		if ($scope.newEnviron != ''){									
+		if ($scope.newEnviron){									
 			$http({
 			    method: 'GET',
 			    url: '/env/add?env=' + $scope.newEnviron			    

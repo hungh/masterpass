@@ -27,18 +27,21 @@ class PwsController(ActionController):
             self.enc = gen_enc_string(self.env, self.user, self.password, self.current_login_id)
 
     def get(self):
-        pws_entry = self.pws_store.get_pws_by_login_env(self.current_login_id, self.user, self.env)
-        clear_password = get_clear_text(self.env, self.user, pws_entry, self.current_login_id)
-        self.write_one_response(str_msg=create_json_status(True, clear_password), all_cookies=[self._jsession_cookie])
+        if self.user and self.env:
+            pws_entry = self.pws_store.get_pws_by_login_env(self.current_login_id, self.user, self.env)
+            clear_password = get_clear_text(self.env, self.user, pws_entry, self.current_login_id)
+            self.write_one_response(str_msg=create_json_status(True, clear_password), all_cookies=[self._jsession_cookie])
 
     def add(self):
-        self.pws_store.insert_new_pws(PwsEntry(self.current_login_id, self.user, self.enc, self.env))
-        self.write_one_response(str_msg=create_json_status(True, 'User entry added.'), all_cookies=[self._jsession_cookie])
+        if self.user and self.env and self.enc:
+            self.pws_store.insert_new_pws(PwsEntry(self.current_login_id, self.user, self.enc, self.env))
+            self.write_one_response(str_msg=create_json_status(True, 'User entry added.'), all_cookies=[self._jsession_cookie])
 
     def update(self):
-        new_enc = gen_enc_string(self.env, self.user, self.password, self.current_login_id)
-        self.pws_store.update_pws_password(self.current_login_id, self.user, self.env, new_enc)
-        self.write_one_response(str_msg=create_json_status(True, 'Entry updated.'), all_cookies=[self._jsession_cookie])
+        if self.env and self.user and self.password:
+            new_enc = gen_enc_string(self.env, self.user, self.password, self.current_login_id)
+            self.pws_store.update_pws_password(self.current_login_id, self.user, self.env, new_enc)
+            self.write_one_response(str_msg=create_json_status(True, 'Entry updated.'), all_cookies=[self._jsession_cookie])
 
     def delete(self):
         pass

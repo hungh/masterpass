@@ -31,7 +31,8 @@ class UserController(ActionController):
         self.new_password = self.get_request_parameter('new_password')
 
     def change_password(self, current_login_id):
-        self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
+        if self.new_password:
+            self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
 
     def get(self):
         """
@@ -45,15 +46,17 @@ class UserController(ActionController):
     def add(self):
         if not self.is_root():
             return None
-        hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
-        self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
-        self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
+        if self.id and self.password:
+            hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
+            self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
+            self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
 
     def update(self):
         if not self.is_root():
             return None
-        self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
-        self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
+        if self.id:
+            self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
+            self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
 
     def delete(self):
         if not self.is_root():

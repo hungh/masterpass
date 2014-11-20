@@ -27,7 +27,16 @@ var adminApp = angular.module('admin-app', [])
 			
 		};
 
-		$scope.addUser = function(){			
+		$scope.addUser = function(){	
+			if(!$scope.newId){
+				$window.alert('User ID is required.');
+				return;
+			}
+			if(!$scope.newPassword){
+				$window.alert('Password is required.');
+				return;
+			}				
+
 			var newUser = {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword};			
 			var httpResponse = $http({
 			    method: 'POST',
@@ -44,7 +53,10 @@ var adminApp = angular.module('admin-app', [])
 		}
 
 		$scope.saveUser = function(){			
-
+			if(!$scope.selectedUser || $scope.selectedUser.id){
+				$window.alert('Please enter select a user');
+				return;
+			}
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/user/update',
