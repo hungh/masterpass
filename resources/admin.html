@@ -99,11 +99,11 @@
 
               <div style="display:none"  id="removeUserId">                    
                     <font color="blue"><strong>Remove an existing user:</strong></font>
-                    <input class="form-control" ng-model="searchText"><br>
+                    <input class="form-control" ng-model="searchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
                     <div class="panel-group" id="accordion">
 
                       <div class="panel panel-default" ng-repeat="user in users | filter: searchText">
-                        <div class="panel-heading">
+                        <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
                           <h4 class="panel-title">
                             <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">{{user.id}}</a>
                           </h4>

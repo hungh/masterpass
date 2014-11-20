@@ -52,7 +52,7 @@
                   <select class="form-control"  ng-model="currUser" ng-options="user.login group by user.env_name for user in users">
                   </select> 
                   <br>
-                  <button class="btn btn-primary" ng-click="getUserPassword()">
+                  <button class="btn btn-primary" ng-click="getUserPassword()" data-toggle="tooltip" data-placement="bottom" title="Select a user above and click to get password">
                     Retrieve Password
                   </button>
                   <br>
