@@ -7,7 +7,7 @@ USER_ID = "id"
 USER_FIRST_NAME = "first"
 USER_LAST_NAME = "last"
 USER_HASH_PW = "hashpw"
-DB_SERVER_HOST = "10.10.13.226"
+DB_SERVER_HOST = "localhost"
 DB_SERVER_PORT = 27017
 SESSION_USER_ID = "uid"
 # operations
