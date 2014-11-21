@@ -86,12 +86,39 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 			}, transformReq);				
 		};
 
-		$scope.updateUserPassword = function(){
+		var delOrUpdateValidate = function(){
 			if(!$scope.currUser || !$scope.currUser.login){
+				return false;
+			}
+			return true;
+		}
+
+		$scope.updateUserPassword = function(){
+			if(!delOrUpdateValidate()){
 				return;
 			}
 			httpCall('POST', '/pws/update', {user: $scope.currUser.login, env: $scope.currUser.env_name, password: $scope.currUser.password}, function(data){
 				$window.alert('Server:' + data.msg);
+			}, transformReq);			
+		};
+
+		$scope.deletePwsEntry = function(){
+			if(!delOrUpdateValidate()){
+				return;
+			}
+			httpCall('POST', '/pws/delete', {user: $scope.currUser.login}, function(data){
+				$window.alert('Server:' + data.msg);				
+				if(data.stat){				
+					for(var i = 0; i < $scope.users.length; i++){
+						if ($scope.users[i].login == $scope.currUser.login){
+							$scope.currUser.login = '';
+							$scope.currUser.env_name = '';
+							$scope.currUser.password = '';
+							$scope.users.splice(i, 1);
+						}
+					}				
+				}
+				
 			}, transformReq);			
 		};
 

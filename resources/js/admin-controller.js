@@ -53,7 +53,7 @@ var adminApp = angular.module('admin-app', [])
 		}
 
 		$scope.saveUser = function(){			
-			if(!$scope.selectedUser || $scope.selectedUser.id){
+			if(!$scope.selectedUser || !$scope.selectedUser.id){
 				$window.alert('Please enter select a user');
 				return;
 			}
@@ -64,21 +64,7 @@ var adminApp = angular.module('admin-app', [])
 			    data: {id: $scope.selectedUser.id, first: $scope.selectedUser.first, last: $scope.selectedUser.last},
 			    headers: glb_formHeader
 			}).success(function(status){
-				alert(status);
-				var isNew = true;
-				angular.forEach($scope.users, function(oneUser, index){
-					
-					if(oneUser.id == uid){					
-						$scope.users [index].first = first;
-						$scope.users [index].last  = last;
-						isNew = false;
-						return;
-					}
-				});
-				// new user, add to the user array
-				if(isNew){
-					$scope.users.push({id: uid, first: first, last: last});
-				}		
+				$window.alert(status);				
 			}).error(function(err_msg){
 				alert(err_msg);
 			});			

@@ -58,9 +58,18 @@
                   <br>
                   <br>
                   <input type="text" class="mtext" ng-model="currUser.password"></input><br><br>              
-                  <button class="btn btn-primary" ng-click="updateUserPassword()">
-                    Update Password
-                  </button>
+
+                  <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                      Update/Delete
+                      <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li><a href="#" ng-click="updateUserPassword()"><span class="glyphicon glyphicon-upload"></span> Update Password</a></li>
+                      <li><a href="#" ng-click="deletePwsEntry()"><span class="glyphicon glyphicon-remove"></span> Delete User</a></li>
+                    </ul>
+                  </div>
+
               </div>
 
               <div class="second-column">
@@ -79,6 +88,7 @@
                 <button class="btn btn-primary" ng-click="savePassword()">Save Password</button>
               </div>
           </div>        
+
         </div>
      </div>
 

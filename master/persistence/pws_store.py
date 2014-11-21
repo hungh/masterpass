@@ -30,6 +30,9 @@ class PwsStore:
     def drop_pws_col(self):
         self.client.drop_database('pws')
 
+    def delete_pws_entry(self, owner, pws_login):
+        self.db.pws_col.remove({'owner': owner, 'login': pws_login})
+
     def delete_pws_by_owner(self, owner):
         self.db.pws_col.remove({'owner': owner})
 

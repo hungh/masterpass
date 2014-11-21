@@ -44,7 +44,9 @@ class PwsController(ActionController):
             self.write_one_response(str_msg=create_json_status(True, 'Entry updated.'), all_cookies=[self._jsession_cookie])
 
     def delete(self):
-        pass
+        if self.user:
+            self.pws_store.delete_pws_entry(self.current_login_id, self.user)
+            self.write_one_response(str_msg=create_json_status(True, 'Entry deleted.'), all_cookies=[self._jsession_cookie])
 
     def get_pws_by_owner(self):
         all_pws_owner = self.pws_store.get_pws_by_owner(self.current_login_id)
