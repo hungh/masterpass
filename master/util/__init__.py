@@ -14,17 +14,14 @@ def create_json_status(bool_stat, message):
     return json.dumps({'stat': bool_stat, 'msg': message})
 
 
-def gen_enc_string(env, user, password, owner):
+def gen_enc_string(secret_key, password):
     """
     Get encrypted string of a pws entry of an owner
-    :param env: string environment name
-    :param user: string user of an pws entry
+    :param secret_key: string key
     :param password: string (clear text)
-    :param owner: string current log-in user
     :return: string encrypted string
     """
-    enc_key = env + user + owner
-    return MyBlowFish(enc_key).encrypt(password)
+    return MyBlowFish(secret_key).encrypt(password)
 
 
 def get_clear_text(env, user, pws_entry, owner):

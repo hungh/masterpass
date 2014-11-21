@@ -41,3 +41,5 @@
 .mtext {
 	width: 170px; 	
 }
+
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }

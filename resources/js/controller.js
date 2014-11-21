@@ -1,7 +1,8 @@
-var mainApp = angular.module('main', []);
+var mainApp = angular.module('main', ['ui.bootstrap']);
 
-mainApp.controller('loginController', ['$scope', '$http', '$window', 'environService', 'transformReq',
-	 function($scope, $http, $window, environService, transformReq){			
+
+mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environService', 'transformReq', '$modal',
+	 function($scope, $http, $window, environService, transformReq, $modal){			
 		$scope.users = [];		
 		$scope.currUser = $scope.users[0];
 		$scope.currEnviron = 'DEV';
@@ -78,7 +79,8 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 				return;	
 			}
 
-			httpCall('POST', '/pws/add', {user: $scope.username, env: $scope.currEnviron, password: $scope.password}, function(data){
+			httpCall('POST', '/pws/add', {user: $scope.username, env: $scope.currEnviron, 
+										  password: $scope.password,  masterPassword: $scope.masterPassword}, function(data){
 				if (data.stat){
 					$scope.users.push({env_name: $scope.currEnviron, login: $scope.username})
 				}
@@ -97,9 +99,24 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 			if(!delOrUpdateValidate()){
 				return;
 			}
-			httpCall('POST', '/pws/update', {user: $scope.currUser.login, env: $scope.currUser.env_name, password: $scope.currUser.password}, function(data){
-				$window.alert('Server:' + data.msg);
-			}, transformReq);			
+			var modalInstance = $modal.open({
+				templateUrl: 'appPasswordPop.html',
+			    controller: 'modalInstanceController',			  
+			    resolve: {
+			        modalData: function () {			         
+			          return {
+			          			env: $scope.currUser.env_name, login: $scope.currUser.login,
+			          		 	password: $scope.currUser.password, masterPassword: $scope.masterPassword
+			          		 };
+			        }
+			    }
+			});
+
+			modalInstance.result.then(function (selectedItem) {
+		      $window.alert('Model result-then=' + selectedItem);
+		    }, function () {
+		       /** exit modal: do nothiing*/
+		    });
 		};
 
 		$scope.deletePwsEntry = function(){
@@ -146,6 +163,31 @@ mainApp.controller('loginController', ['$scope', '$http', '$window', 'environSer
 		};  
 
 	}]);
+
+angular.module('main').controller('modalInstanceController', ['$scope', '$http', '$window', '$modalInstance', 'transformReq', 'modalData', function($scope, $http, $window, $modalInstance, transformReq, modalData){
+	$scope.updatePwsUserPassword = function(masterPassword){		
+		$http({
+		    method: 'POST',
+		    url: '/pws/update',
+		    transformRequest: transformReq,			    
+		    data: {user: modalData.login, env: modalData.env, 
+											password: modalData.password, masterPassword: masterPassword},
+		    headers: glb_formHeader				    
+		}).success(function(data){
+			if(data.stat){
+				$window.alert('Server:' + data.msg);
+				$modalInstance.dismiss('cancel');
+			}
+		}).error(function(err_msg){
+		  	$window.alert('Error:' + err_msg);
+		});
+	};
+
+	$scope.cancel = function () {
+    	$modalInstance.dismiss('cancel');
+  	};	
+}]);
+
 
 mainApp.controller('newEnvionController', ['$scope', '$window', '$http', 'environService', function($scope, $window, $http, environService){
 

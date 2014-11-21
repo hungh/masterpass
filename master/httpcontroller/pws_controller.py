@@ -24,7 +24,11 @@ class PwsController(ActionController):
         self.user = self.get_request_parameter('user')
         self.password = self.get_request_parameter('password')
         if self.password:
-            self.enc = gen_enc_string(self.env, self.user, self.password, self.current_login_id)
+            master_key = self.gen_secret_key()
+            self.enc = gen_enc_string(master_key, self.password)
+
+    def gen_secret_key(self):
+        return self.env + self.user + self.current_login_id
 
     def get(self):
         if self.user and self.env:
@@ -39,7 +43,8 @@ class PwsController(ActionController):
 
     def update(self):
         if self.env and self.user and self.password:
-            new_enc = gen_enc_string(self.env, self.user, self.password, self.current_login_id)
+            master_key = self.gen_secret_key()
+            new_enc = gen_enc_string(master_key, self.password)
             self.pws_store.update_pws_password(self.current_login_id, self.user, self.env, new_enc)
             self.write_one_response(str_msg=create_json_status(True, 'Entry updated.'), all_cookies=[self._jsession_cookie])
 
