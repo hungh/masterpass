@@ -24,7 +24,7 @@ def gen_enc_string(secret_key, password):
     return MyBlowFish(secret_key).encrypt(password)
 
 
-def get_clear_text(env, user, pws_entry, owner):
+def get_clear_text(secret_key, enc):
     """
     Get clear text of an pws entry
     :param env: string environment name
@@ -33,7 +33,7 @@ def get_clear_text(env, user, pws_entry, owner):
     :param owner: string current log-in user id
     :return: clear text of password entry (in a pws)
     """
-    password_entry = MyBlowFish(env + user + owner).decrypt(pws_entry.enc)
+    password_entry = MyBlowFish(secret_key).decrypt(enc)
     return password_entry.decode('utf-8')
 
 

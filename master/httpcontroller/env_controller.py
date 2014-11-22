@@ -13,8 +13,6 @@ class EnvController(ActionController):
 
     def control(self):
         self.env = self.get_request_parameter('env')
-        if self.env:
-            raise KeyError('Environment name is required')
 
     def get(self):
         """
