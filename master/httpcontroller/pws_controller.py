@@ -33,6 +33,8 @@ class PwsController(ActionController):
     def get(self):
         if self.user and self.env:
             pws_entry = self.pws_store.get_pws_by_login_env(self.current_login_id, self.user, self.env)
+            if not pws_entry:
+                return
             clear_password = get_clear_text(self.master_password, pws_entry.enc)
             if clear_password:
                 self.write_one_response(str_msg=create_json_status(True, clear_password), all_cookies=[self._jsession_cookie])

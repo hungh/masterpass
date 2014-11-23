@@ -48,4 +48,6 @@ class PwsEntry:
 
     @staticmethod
     def to_pws(pws_dict):
-        return PwsEntry(pws_dict['owner'], pws_dict['login'], pws_dict['enc'], pws_dict['env_name'])
+        if pws_dict:
+            return PwsEntry(pws_dict['owner'], pws_dict['login'], pws_dict['enc'], pws_dict['env_name'])
+        return None

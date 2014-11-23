@@ -30,6 +30,7 @@
 .second-column {
   width: 50%;
   float: right;
+  padding-left: 10px;
 }
 
 .btn {    

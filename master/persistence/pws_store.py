@@ -37,6 +37,9 @@ class PwsStore:
     def delete_pws_by_owner(self, owner):
         self.db.pws_col.remove({'owner': owner})
 
+    def delete_pws_by_owner_env(self, owner, env_name):
+        self.db.pws_col.remove({'owner': owner, 'env_name': env_name})
+
     def change_all_pws_enc(self, owner, old_master_password, master_password):
         """
         :param owner: string id of the owner

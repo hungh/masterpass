@@ -8,6 +8,21 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 		$scope.currEnviron = 'DEV';
 		$scope.newEnviron = '';
 		$scope.environs = []; 
+
+		var removeSelectedUser = function(removingLogin){
+			for(var i = 0; i < $scope.users.length; i++){
+				if ($scope.users[i].login == removingLogin) {
+					/**if selected*/
+					if($scope.currUser){
+						$scope.currUser.login = '';
+						$scope.currUser.env_name = '';
+						$scope.currUser.password = '';	
+					}					
+					$scope.users.splice(i, 1);
+					break;
+				}
+			}
+		};	
 		
 		httpPostGetService.httpPostGet('GET', '/env/get', {}, function(data){
 			$scope.environs = data;
@@ -24,6 +39,36 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 				$window.alert(data.msg);
 			}
 		});
+
+		$scope.createNewEnv = function(){			
+			if ($scope.newEnviron){		
+				httpPostGetService.httpPostGet('GET', '/env/add?env=' + $scope.newEnviron, {},  function(data){
+					if (data.stat){
+						environService.push($scope.newEnviron);			 				
+					}
+					$window.alert(data.msg);	
+					
+				});									
+			}else{
+				$window.alert('Please enter the environment name.');
+			}			
+		};
+
+		$scope.deleteEnv = function(env){
+			httpPostGetService.httpPostGet('GET', '/env/delete?env=' + env, {},  function(data){
+					var new_users = [];
+					if (data.stat){
+						environService.pop(env);		
+						angular.forEach($scope.users, function(v, i){
+							if(v.env_name != env){
+								new_users.push(v);
+							}							
+						});
+						$scope.users = new_users;	
+					}
+					$window.alert(data.msg);						
+				});	
+		};
 
 		/** functions */
 		$scope.getUserPassword = function(){						
@@ -128,15 +173,8 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			}
 			httpPostGetService.httpPostGet('POST', '/pws/delete', {user: $scope.currUser.login}, function(data){
 				$window.alert('Server:' + data.msg);				
-				if(data.stat){				
-					for(var i = 0; i < $scope.users.length; i++){
-						if ($scope.users[i].login == $scope.currUser.login){
-							$scope.currUser.login = '';
-							$scope.currUser.env_name = '';
-							$scope.currUser.password = '';
-							$scope.users.splice(i, 1);
-						}
-					}				
+				if(data.stat){			
+					removeSelectedUser($scope.currUser.login);					
 				}
 				
 			});			
@@ -148,8 +186,19 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			return '#';
 		};
 		
-		$scope.$on('envChange', function(event, data) {				
+		$scope.$on('addEnvionEvent', function(event, data) {				
         	$scope.environs.push(data);
+       	});
+
+       	$scope.$on('delEnvionEvent', function(event, data) {				
+        	if($scope.environs){
+        		for(var i = 0; i < $scope.environs.length; i++){
+        			if($scope.environs[i] == data){
+        				$scope.environs.splice(i, 1);
+        				break;
+        			}
+        		}
+        	}
        	});
 
 		$scope.memus = ['workAreaId', 'changeEnvId'];
@@ -200,29 +249,13 @@ angular.module('main').controller('modalInstanceController', ['$scope', '$http',
 }]);
 
 
-mainApp.controller('newEnvionController', ['$scope', '$window', '$http', 'environService', 'httpPostGetService', 
-			function($scope, $window, $http, environService, httpPostGetService){
-
-	$scope.createNewEnv = function(){			
-		if ($scope.newEnviron){		
-			httpPostGetService.httpPostGet('GET', '/env/add?env=' + $scope.newEnviron, {},  function(data){
-				if (data.stat){
-					environService.push($scope.newEnviron);			 				
-				}
-				$window.alert(data.msg);	
-				
-			});									
-		}else{
-			$window.alert('Please enter the environment name.');
-		}			
-	};
-
-}]);
-
 mainApp.factory('environService', function($rootScope){		
 	return {
 		push: function(data){			
-			$rootScope.$broadcast('envChange', data);;
+			$rootScope.$broadcast('addEnvionEvent', data);;
+		},
+		pop: function(data){
+			$rootScope.$broadcast('delEnvionEvent', data);;	
 		}		
 	};
 });

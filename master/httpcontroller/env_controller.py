@@ -18,12 +18,12 @@ class EnvController(ActionController):
         """
             Return all environments
         """
-        all_env = self.env_store.get_all_env()
+        all_env = self.env_store.get_all_env_by_owner(self.current_login_id)
         self.write_one_response(str_msg=json.dumps(all_env), all_cookies=[self._jsession_cookie])
 
     def add(self):
         try:
-            self.env_store.insert_new_env(self.env)
+            self.env_store.insert_new_env_by_owner(self.env, self.current_login_id)
         except pymongo.errors.DuplicateKeyError:
             return create_json_status(False, 'Duplicate environment.')
         self.write_one_response(str_msg=create_json_status(True, 'Environment added.'), all_cookies=[self._jsession_cookie])
@@ -32,7 +32,8 @@ class EnvController(ActionController):
         pass
 
     def delete(self):
-        pass
+        self.env_store.delete_env_by_owner(self.env, self.current_login_id)
+        self.write_one_response(str_msg=create_json_status(True, 'Environment removed.'), all_cookies=[self._jsession_cookie])
 
     def other_action_mappings(self, action):
         pass

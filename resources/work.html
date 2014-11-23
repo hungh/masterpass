@@ -19,6 +19,8 @@
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   <script src="/js/uibootstrap/ui-bootstrap-custom-tpls-0.12.0.min.js"></script>
   <script src="/js/controller.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
  </head>
  <body>
   
@@ -33,16 +35,14 @@
                     <li><a href ng-click="switchMenu('workAreaId')"><span class="glyphicon glyphicon-home"></span> Main</a></li>
                     <li><a href="/changepw.html"><span class="glyphicon glyphicon-repeat"></span> Change Password</a></li>
                     <li><a href="{{getAdminLink()}}"><span class="glyphicon glyphicon-download"></span> Admin Console</a></li>
-                    <li><a href ng-click="switchMenu('changeEnvId')"><span class="glyphicon glyphicon-cloud"></span> Creat new env</a></li>
+                    <li><a href ng-click="switchMenu('changeEnvId')"><span class="glyphicon glyphicon-cloud"></span> Manage environments</a></li>
                     <li><a href="/about.html"><span class="glyphicon glyphicon-user"></span> About Author</a></li>
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>                        
                   </ul>
                 </li>            
               </ul>
             </div>
-          <div class="clearfix visible-lg"></div>      
-          <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-          <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+          <div class="clearfix visible-lg"></div>              
       </div>
 
       <div class="jumbotron main modal-body">  
@@ -107,19 +107,38 @@
             </div>
           </script>
           <!---poe-->
-
         </div>
-     </div>
 
-     <div ng-controller="newEnvionController">      
-       <div class="jumbotron main modal-body" style="display:none" id="changeEnvId">
-            <div class="form-group">
-               <label for="newEnv">Environment name:</label>
-               <input type="strong" class="form-control" ng-model="newEnviron" id="newEnv">
+        <div class="jumbotron main modal-body" style="display:none" id="changeEnvId">
+            <div class="form-group first-column">
+               <label for="newEnv">New Environment:</label>
+               <input type="strong" class="form-control" ng-model="newEnviron" id="newEnv"><br>
+               <button type="submit" class="btn btn-primary" ng-click="createNewEnv()">Create New</button>
             </div>
-            <button type="submit" class="btn btn-primary" ng-click="createNewEnv()">Save</button>
-      </div>
-    </div>
+            <div class="form-group second-column">               
+               <label for="newEnvTxt">Remove Environment:</label>
+                    <input class="form-control" id="newEnvTxt" ng-model="searchEnv" data-toggle="tooltip" data-placement="right" title="Type to search a env"><br>
+                    <div class="panel-group" id="accordion">
+
+                      <div class="panel panel-default" ng-repeat="env in environs | filter: searchEnv">
+                        <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
+                          <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">{{env}}</a>
+                          </h4>
+                        </div>
+                        <div id="collapse{{$index}}" class="panel-collapse collapse">
+                          <div class="panel-body">                            
+                            <button class="btn-xs btn-danger" data-toggle="tooltip" data-placement="bottom" title="Remove this environment"  ng-click="deleteEnv(env)"><span class="glyphicon glyphicon-remove"></span></button>
+                          </div>
+                        </div>
+                      </div>
+                      
+                  </div>
+                  <div class="alert alert-danger" role="alert">Delete environment will erase all user entries under it!</div>
+            </div>            
+        </div>
+
+     </div>
 
   </div> <!--main app-->
 
