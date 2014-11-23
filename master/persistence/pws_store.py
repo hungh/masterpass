@@ -1,5 +1,6 @@
 from master.boostrap.db_client import SingleDBClient
 from master.beans.pws_entries import PwsEntry
+from master.encryption.encrypt_bfish import MyBlowFish
 from pymongo import ASCENDING
 
 
@@ -35,6 +36,25 @@ class PwsStore:
 
     def delete_pws_by_owner(self, owner):
         self.db.pws_col.remove({'owner': owner})
+
+    def change_all_pws_enc(self, owner, old_master_password, master_password):
+        """
+        :param owner: string id of the owner
+        :param old_master_password: string old master password
+        :param master_password: string new master password
+        :return:
+        """
+        updating_record = []
+        for pws_entry in self.db.pws_col.find({'owner': owner}):
+            each_clear_text = MyBlowFish(old_master_password).decrypt(pws_entry['enc'])
+            new_enc = MyBlowFish(master_password).encrypt(each_clear_text.decode('utf-8'))
+            updating_record.append({'login': pws_entry['login'],
+                                    'env_name': pws_entry['env_name'], 'enc': new_enc})
+
+            # updating records back
+        if len(updating_record) > 0:
+            for new_pws_entry in updating_record:
+                self.update_pws_password(owner, new_pws_entry['login'], new_pws_entry['env_name'], new_pws_entry['enc'])
 
 
 

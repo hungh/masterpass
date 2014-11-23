@@ -89,20 +89,19 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			          		};
 			        }
 			    }
-			});						
+			});	 					
 		};
 
-		var delOrUpdateValidate = function(){
-			if(!$scope.currUser || !$scope.currUser.login){
-				return false;
-			}
-			return true;
-		}
-
 		$scope.updateUserPassword = function(){
-			if(!delOrUpdateValidate()){
+			if(!$scope.currUser || !$scope.currUser.login) {				
+				$window.alert('Please select an entry from the drop-down');
 				return;
 			}			
+			if(!$scope.currUser.password){
+				$window.alert('Enter a new value for password');
+				return;
+			}
+
 			$modal.open({
 				templateUrl: 'appPasswordPop.html',
 			    controller: 'modalInstanceController',			  
@@ -124,7 +123,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 		};
 
 		$scope.deletePwsEntry = function(){
-			if(!delOrUpdateValidate()){
+			if(!$scope.currUser){
 				return;
 			}
 			httpPostGetService.httpPostGet('POST', '/pws/delete', {user: $scope.currUser.login}, function(data){
@@ -187,6 +186,8 @@ angular.module('main').controller('modalInstanceController', ['$scope', '$http',
 					modalData.callback.call(this, resp);
 				}									
 				$modalInstance.dismiss('cancel');
+			}else{
+				$window.alert('Error:' + resp.msg);	
 			}
 		}).error(function(err_msg){
 		  	$window.alert('Error:' + err_msg);

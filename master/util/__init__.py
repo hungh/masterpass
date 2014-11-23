@@ -34,7 +34,10 @@ def get_clear_text(secret_key, enc):
     :return: clear text of password entry (in a pws)
     """
     password_entry = MyBlowFish(secret_key).decrypt(enc)
-    return password_entry.decode('utf-8')
+    try:
+        return password_entry.decode('utf-8')
+    except UnicodeDecodeError:
+        return None
 
 
 def get_current_login_user_id(request_handler):

@@ -1,5 +1,6 @@
 from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
+from master.persistence.pws_store import PwsStore
 from master.httpcontroller.login_controller import LoginController
 from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION
 from master.beans.users import User
@@ -33,6 +34,8 @@ class UserController(ActionController):
     def change_password(self, current_login_id):
         if self.new_password:
             self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
+            # updating all pws entries
+            PwsStore().change_all_pws_enc(self.current_login_id, self.password, self.new_password)
 
     def get(self):
         """
