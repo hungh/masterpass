@@ -97,7 +97,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			          			callback: 
 				          			function(data){
 										if (data.stat){
-											$scope.currUser.password = data.msg;											
+											$scope.currUser.password = maskText(data.msg, 'maskPasswordId');											
 										}else {
 											$window.alert(data.msg);
 										}
@@ -205,16 +205,15 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 
        	$scope.isMaskCheck = false;
        	/** mask/ unmask password*/
-       	$scope.maskPassword = function(){
-       		$window.alert($scope.isMaskCheck);
+       	$scope.maskPassword = function(maskId){       		
        		if ($scope.isMaskCheck === true){
-       			$scope.currUser.password = maskText($scope.currUser.password);
+       			$scope.currUser.password = unMaskText($scope.currUser.password, maskId);       			
        		}else{
-       			$scope.currUser.password = unMaskText($scope.currUser.password);
+       			$scope.currUser.password = maskText($scope.currUser.password, maskId);
        		}
        	};
 
-		$scope.memus = ['workAreaId', 'changeEnvId'];
+		$scope.memus = ['workAreaId', 'changeEnvId', 'changePwId'];
 
        	$scope.switchMenu = function(elemId){
 			angular.forEach($scope.memus, function(elementId, index){

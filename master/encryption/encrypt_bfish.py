@@ -1,8 +1,6 @@
 from Crypto.Cipher import Blowfish
 import binascii
 
-#key = b'7#@25FRL$ZWD'
-
 
 class MyBlowFish:
 
@@ -15,7 +13,6 @@ class MyBlowFish:
         packing_len = 8 - byte_num % 8
         appendage = chr(packing_len) * packing_len
         return clear_text + appendage
-
 
     def encrypt(self, clear_text):
         c1 = Blowfish.new(self.key, Blowfish.MODE_ECB)
@@ -38,11 +35,3 @@ class MyBlowFish:
     @staticmethod
     def print_hex(data):
         return binascii.hexlify(data)
-
-
-#text = 'Sdnob14'
-#c =  MyBlowFish('fjfdfdfsa')
-#enc = c.encrypt(text)
-#print(enc)
-#result = c.decrypt(enc)
-#print(result)

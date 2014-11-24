@@ -1,6 +1,5 @@
 /** Change password controller */
-var changepwApp = angular.module('changepw', [])
-	.controller('changepwController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){	
+mainApp.controller('changepwController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){	
 
 	$scope.password = '';
 	$scope.newPassword = '';
@@ -60,5 +59,3 @@ var changepwApp = angular.module('changepw', [])
 			});			
 	};
 }]);
-
-changepwApp.factory('transformReq', glb_postTransformFnc);
