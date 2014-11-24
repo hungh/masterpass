@@ -27,6 +27,11 @@
    z-index: 3;
 }
 
+.carousel-help {
+  width: 740px;
+  height: 336px;
+}
+
 .form-control{
 	width: 170px;
 }
