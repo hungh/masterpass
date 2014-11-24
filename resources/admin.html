@@ -34,75 +34,73 @@
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>                        
                   </ul>
                 </li>  
-                <li role="presentation" class="active"><a href="#">Welcome <span class="badge">root</span></a></li>               
+                <li role="presentation" class="active"><a href="#">Welcome <span class="glyphicon glyphicon-user"></span><span class="badge">root</span></a></li>               
               </ul>
             </div>
           <div class="clearfix visible-lg"></div>            
       </div>
 
         <div class="jumbotron main">
-          <div>
-            <div>
-
-                  <div style="display:block" id="updateUserId">   
-                      <font color="blue"><strong>Update an exising user</strong></font>
+ 
+              <div style="display:block" id="updateUserId">   
+                      <strong>Update an exising user</strong>
                       <div class="form-group">
-                          <label for="slcuser">Select user:</label>
+                          <label for="slcuser"><small>Select user:</small></label>
                           <select class="form-control"  ng-model="selectedUser" ng-options="user.id group by user.last for user in users" id="slcuser">
                           </select> 
                       </div>
                       <form role="form">
                         <div class="form-group">
-                          <label for="userid">User ID:</label>
+                          <label for="userid"><small>User ID:</small></label>
                           <input type="strong" class="form-control" ng-model="selectedUser.id" id="userid" disabled>
                         </div>
 
                         <div class="form-group">
-                          <label for="first">First Name:</label>
+                          <label for="first"><small>First Name:</small></label>
                           <input type="strong" class="form-control" ng-model="selectedUser.first" id="first">
                         </div>
 
                         <div class="form-group">
-                          <label for="last">Last Name:</label>
+                          <label for="last"><small>Last Name:</small></label>
                           <input type="strong" class="form-control" ng-model="selectedUser.last" id="last">
                         </div>
 
-                        <button type="submit" class="btn btn-primary" ng-click="saveUser()">Submit</button>
+                        <button type="submit" class="btn btn-primary" ng-click="saveUser()"><span class="glyphicon glyphicon-save"></span>&nbsp;Update</button>
                       </form>                      
               </div>
 
               <div style="display:none"  id="addUserId">
-                <font color="blue"><strong>Add a new user</strong></font>                
+                <strong>Add a new user</strong>                
                 <form role="form">
                   <div class="form-group">
-                    <label for="newId">User ID:</label>
+                    <label for="newId"><small>User ID:</small></label>
                     <input type="strong" class="form-control" ng-model="newId" id="newId">
                   </div>
 
                   <div class="form-group">
-                    <label for="newFirst">First Name:</label>
+                    <label for="newFirst"><small>First Name:</small></label>
                     <input type="strong" class="form-control" ng-model="newFirst" id="newFirst">
                   </div>
 
                   <div class="form-group">
-                    <label for="newLast">Last Name:</label>
+                    <label for="newLast"><small>Last Name:</small></label>
                     <input type="strong" class="form-control" ng-model="newLast" id="newLast">
                   </div>
 
                   <div class="form-group">
-                    <label for="newPassword">Password:</label>
+                    <label for="newPassword"><small>Password:</small></label>
                     <input type="password" class="form-control" ng-model="newPassword" id="newPassword">
                   </div>
 
-                  <button type="submit" class="btn btn-primary" ng-click="addUser()">Submit</button>
+                  <button type="submit" class="btn btn-primary" ng-click="addUser()"><span class="glyphicon glyphicon-save"></span>&nbsp;Add</button>
                 </form>
 
 
               </div>
 
               <div style="display:none"  id="removeUserId">                    
-                    <font color="blue"><strong>Remove an existing user:</strong></font>
-                    <input class="form-control" ng-model="searchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
+                    <strong>Remove an existing user:</strong>
+                    <input class="form-control" placeholder="Type to search user" ng-model="searchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
                     <div class="panel-group" id="accordion">
 
                       <div class="panel panel-default" ng-repeat="user in users | filter: searchText">
@@ -113,20 +111,15 @@
                         </div>
                         <div id="collapse{{$index}}" class="panel-collapse collapse">
                           <div class="panel-body">
-                            <small>{{user.first}}</small><br>
-                            <small>{{user.last}}</small>
+                            <small>{{user.first}}</small>&nbsp;<small>{{user.last}}</small>
                             <br>                        
-                            <button class="btn-xs btn-danger"  ng-click="deleteUser(user.id)"><span class="glyphicon glyphicon-remove"></span></button>
+                            <button class="btn-xs btn-danger"  title="Remove this user" ng-click="deleteUser(user.id)"><span class="glyphicon glyphicon-remove"></span></button>
                           </div>
                         </div>
-                      </div>
-                      
+                      </div>                      
                     </div>
-                    <div class="alert alert-danger" role="alert">Delete a user will erase all data belonging to it!</div>
+                    <span class="glyphicon glyphicon-warning-sign"></span><abbr title="Delete a user will erase all data belonging to it!">&nbsp;<p style="font-size:12px;color:red;">Warning!</p></abbr>                    
               </div>
-
-          </div> 
-        </div>
       </div> 
     </div>
   </div>
