@@ -1,6 +1,6 @@
 from master.handler.cookie.cookie_handler import CookieHandler
 from master.beans.session.session_bean import SessionBean
-from master.consts import SESSION_TIMEOUT
+from master.consts import SESSION_TIMEOUT, SESSION_USER_ID
 from master.meta.singleton import Singleton
 from uuid import uuid4
 
@@ -21,6 +21,15 @@ class SessionController(metaclass=Singleton):
 
     def __init__(self):
         self.all_session_beans = dict()
+
+    def invalidate_session_by_login(self, owner):
+        for session_id in self.all_session_beans.keys():
+            session_bean = self.all_session_beans[session_id]
+            if not session_bean:
+                continue
+            if owner == session_bean.get_attribute(SESSION_USER_ID):
+                self.invalidate_session(session_id)
+                break
 
     def invalidate_session(self, session_id):
         try:

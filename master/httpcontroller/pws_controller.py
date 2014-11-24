@@ -5,6 +5,11 @@ from master.beans.pws_entries import PwsEntry
 from master.util import create_json_status, get_clear_text, gen_enc_string
 from master.consts import GET_PWS_OWNER
 
+WRONG_PASSWORD_MSG = 'Please enter a correct password'
+PWS_ENTRY_ADD_MSG = 'A user/password entry has been added successfully.'
+PWS_ENTRY_UPDATE_MSG = 'A user/password entry has been updated successfully.'
+PWS_ENTRY_DELETE_MSG = 'A user/password entry has been deleted successfully.'
+
 
 class PwsController(ActionController):
     def __init__(self, request_handler,  action):
@@ -39,26 +44,26 @@ class PwsController(ActionController):
             if clear_password:
                 self.write_one_response(str_msg=create_json_status(True, clear_password), all_cookies=[self._jsession_cookie])
             else:
-                self.write_one_response(str_msg=create_json_status(False, 'Invalid password'), all_cookies=[self._jsession_cookie])
+                self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG), all_cookies=[self._jsession_cookie])
 
     def add(self):
         if not self.enc:
-            self.write_one_response(str_msg=create_json_status(False, 'Invalid password'))
+            self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG))
         elif self.user and self.env:
             self.pws_store.insert_new_pws(PwsEntry(self.current_login_id, self.user, self.enc, self.env))
-            self.write_one_response(str_msg=create_json_status(True, 'User entry added.'), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_ADD_MSG), all_cookies=[self._jsession_cookie])
 
     def update(self):
         if not self.enc:
-            self.write_one_response(str_msg=create_json_status(False, 'Invalid password'))
+            self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG))
         elif self.env and self.user and self.password:
             self.pws_store.update_pws_password(self.current_login_id, self.user, self.env, self.enc)
-            self.write_one_response(str_msg=create_json_status(True, 'Entry updated.'), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_UPDATE_MSG), all_cookies=[self._jsession_cookie])
 
     def delete(self):
         if self.user:
             self.pws_store.delete_pws_entry(self.current_login_id, self.user)
-            self.write_one_response(str_msg=create_json_status(True, 'Entry deleted.'), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_DELETE_MSG), all_cookies=[self._jsession_cookie])
 
     def get_pws_by_owner(self):
         all_pws_owner = self.pws_store.get_pws_by_owner(self.current_login_id)

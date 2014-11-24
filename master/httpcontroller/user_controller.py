@@ -9,6 +9,13 @@ import bcrypt
 import json
 import math
 
+USER_ADD_MSG = 'User has been added successfully.'
+USER_UPDATE_MSG = 'User has been updated successfully.'
+USER_DELETE_MSG = 'User has been removed successfully.'
+USER_INVALID_PASS = 'Please enter a correct password.'
+USER_CHANGE_PASS = 'Your password has been changed successfully.'
+ROOT_NO_DELETE = 'admin user cannot be deleted.'
+
 
 class UserController(ActionController):
     def __init__(self, request_handler,  action):
@@ -67,23 +74,24 @@ class UserController(ActionController):
         if self.id and self.password:
             hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
             self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
-            self.write_one_response(str_msg="Successfully add a user." + self.id + ";" + self.last, all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_ADD_MSG, all_cookies=[self._jsession_cookie])
 
     def update(self):
         if not self.is_root():
             return None
         if self.id:
             self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
-            self.write_one_response(str_msg="Successfully update a user.", all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_UPDATE_MSG, all_cookies=[self._jsession_cookie])
 
     def delete(self):
         if not self.is_root():
             return None
         # you can not delete root himself
         if self.id == 'root':
-            return 'Error:root user cannot be deleted.'
+            return ROOT_NO_DELETE
         self.user_store.delete_user_by_id(self.id)
-        self.write_one_response(str_msg="Successfully delete user " + self.id, all_cookies=[self._jsession_cookie])
+        SessionController().invalidate_session_by_login(self.id)
+        self.write_one_response(str_msg=USER_DELETE_MSG, all_cookies=[self._jsession_cookie])
 
     def other_action_mappings(self, action):
         if action == CURRENT_USER_ACTION:
@@ -93,9 +101,9 @@ class UserController(ActionController):
             self.write_one_response(str_msg=json.dumps(all_session), all_cookies=[self._jsession_cookie])
         elif action == CHANGE_PW_ACTION:
             if not LoginController.is_valid_user(self.current_login_id, self.password):
-                return "Incorrect password provided"
+                return USER_INVALID_PASS
             self.change_password(self.current_login_id)
-            self.write_one_response(str_msg="Your password was changed.", all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_CHANGE_PASS, all_cookies=[self._jsession_cookie])
 
     def is_root(self):
         """

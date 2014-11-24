@@ -22,7 +22,6 @@ class LoginController(BaseHttpController):
         logger().info('Login=' + self.login + ';password=' + self.password)
 
     def write_body(self):
-        #file_full_path = BaseHttpController.get_resource() + '/work.html'
         if LoginController.is_valid_user(self.login, self.password):
             # create a new session
             new_http_session, is_new_jsession = SessionController().get_session(self.request_handler,
@@ -38,7 +37,7 @@ class LoginController(BaseHttpController):
                 self.write_one_response(str_msg=create_json_status(True, '/work.html'), all_cookies=[jsession_cookie])
 
         else:
-            self.write_one_response(str_msg=create_json_status(False, 'Failed to authenticate'))
+            self.write_one_response(str_msg=create_json_status(False, 'Either login name or password is incorrect.'))
 
     @staticmethod
     def is_valid_user(user_id, password_str):
