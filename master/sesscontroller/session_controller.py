@@ -29,7 +29,6 @@ class SessionController(metaclass=Singleton):
                 continue
             if owner == session_bean.get_attribute(SESSION_USER_ID):
                 self.invalidate_session(session_id)
-                break
 
     def invalidate_session(self, session_id):
         try:

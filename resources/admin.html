@@ -47,15 +47,15 @@
              
                 <strong><span class="glyphicon glyphicon-search"></span>&nbsp;Search user</strong>
                 <input class="form-control" placeholder="Type to search user" ng-model="sessionSearchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
-                <div class="panel-group adjust-width" id="accordion">
+                <div class="panel-group adjust-width" id="accordionStatId">
 
                   <div class="panel panel-default" ng-repeat="oneSession in allSessions | filter: sessionSearchText">
                     <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
                       <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">{{oneSession.user}}</a>
+                        <a data-toggle="collapse" data-parent="#accordionStatId" href="#collapseStat{{$index}}">{{oneSession.user}}</a>
                       </h4>
                     </div>
-                    <div id="collapse{{$index}}" class="panel-collapse collapse">
+                    <div id="collapseStat{{$index}}" class="panel-collapse collapse">
                       <div class="panel-body">
                         <small>{{oneSession.session}}</small>
                       </div>
@@ -125,15 +125,15 @@
               <div style="display:none"  id="removeUserId">                    
                     <strong><span class="glyphicon glyphicon-minus-sign"></span>&nbsp;Remove a user:</strong>
                     <input class="form-control" placeholder="Type to search user" ng-model="searchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
-                    <div class="panel-group adjust-width" id="accordion">
+                    <div class="panel-group adjust-width" id="accordionRemoveUserId">
 
                       <div class="panel panel-default" ng-repeat="user in users | filter: searchText">
                         <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
                           <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">{{user.id}}</a>
+                            <a data-toggle="collapse" data-parent="#accordionRemoveUserId" href="#collapseAdminRemove{{$index}}">{{user.id}}</a>
                           </h4>
                         </div>
-                        <div id="collapse{{$index}}" class="panel-collapse collapse">
+                        <div id="collapseAdminRemove{{$index}}" class="panel-collapse collapse">
                           <div class="panel-body">
                             <small>{{user.first}}</small>&nbsp;<small>{{user.last}}</small>
                             <br>                        
