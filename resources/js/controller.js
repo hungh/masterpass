@@ -97,7 +97,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			          			callback: 
 				          			function(data){
 										if (data.stat){
-											$scope.currUser.password = data.msg;
+											$scope.currUser.password = data.msg;											
 										}else {
 											$window.alert(data.msg);
 										}
@@ -202,6 +202,17 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
         		}
         	}
        	});
+
+       	$scope.isMaskCheck = false;
+       	/** mask/ unmask password*/
+       	$scope.maskPassword = function(){
+       		$window.alert($scope.isMaskCheck);
+       		if ($scope.isMaskCheck === true){
+       			$scope.currUser.password = maskText($scope.currUser.password);
+       		}else{
+       			$scope.currUser.password = unMaskText($scope.currUser.password);
+       		}
+       	};
 
 		$scope.memus = ['workAreaId', 'changeEnvId'];
 
