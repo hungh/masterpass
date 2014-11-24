@@ -4,11 +4,14 @@ var mainApp = angular.module('main', ['ui.bootstrap']);
 mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environService', '$modal', 'httpPostGetService',
 	 function($scope, $http, $window, environService, $modal, httpPostGetService){			
 		$scope.users = [];		
+		/** current select pws entry user*/
 		$scope.currUser = $scope.users[0];
+		/** log-in name to access application*/
+		$scope.appLoginName = '';
 		$scope.currEnviron = 'DEV';
 		$scope.newEnviron = '';
 		$scope.environs = []; 
-		$scope.show_admin = false;
+		$scope.showAdmin = false;
 
 		var removeSelectedUser = function(removingLogin){
 			for(var i = 0; i < $scope.users.length; i++){
@@ -29,9 +32,10 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			$scope.environs = data;
 		});
 
-		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(current_user){
-			if(current_user == 'root'){
-				$scope.show_admin = true;
+		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(appLoginName){
+			$scope.appLoginName  = appLoginName;
+			if(appLoginName == 'root'){
+				$scope.showAdmin = true;
 			}
 			
 		});
