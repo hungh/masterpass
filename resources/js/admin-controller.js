@@ -15,6 +15,7 @@ var adminApp = angular.module('admin-app', [])
 		});		
 
 		$scope.memus = ['addUserId', 'removeUserId', 'updateUserId', 'adminStatId'];		
+		$scope.allSessions = [];
 
 		$scope.switchMenu = function(elemId){
 			angular.forEach($scope.memus, function(elementId, index){
@@ -27,18 +28,20 @@ var adminApp = angular.module('admin-app', [])
 			
 		};
 
-		$scope.getAdminStat = function(){
+		
+		$scope.getSessions = function(){
 			$http({
 			    method: 'GET',
 			    url: '/user/active',
 			}).success(function(data){
-				for(var i = 0; i < data.length; i ++){
-					$window.alert('session id=' + data[i].session + ';user=' + data[i].user);
-				}				
+				$scope.totalLogins = data.length;			
+				$scope.allSessions = data;
 			}).error(function(err_msg){
 				$window.alert(err_msg);
 			});			
 		};
+
+		$scope.getSessions();
 
 		$scope.addUser = function(){	
 			if(!$scope.newId){

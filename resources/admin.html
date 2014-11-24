@@ -43,8 +43,28 @@
 
         <div class="jumbotron main main-admin">
               <div style="display:block" id="adminStatId">   
-                Stats
-                <button ng-click="getAdminStat()">TEST</button>
+                <a href="#">Total number of logins <span class="badge" ng-bind="totalLogins"></span></a><br><br>                
+             
+                <strong><span class="glyphicon glyphicon-search"></span>&nbsp;Search user</strong>
+                <input class="form-control" placeholder="Type to search user" ng-model="sessionSearchText" data-toggle="tooltip" data-placement="right" title="Type to search a user"><br>
+                <div class="panel-group adjust-width" id="accordion">
+
+                  <div class="panel panel-default" ng-repeat="oneSession in allSessions | filter: sessionSearchText">
+                    <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{$index}}">{{oneSession.user}}</a>
+                      </h4>
+                    </div>
+                    <div id="collapse{{$index}}" class="panel-collapse collapse">
+                      <div class="panel-body">
+                        <small>{{oneSession.session}}</small>
+                      </div>
+                    </div>
+                  </div>                      
+                </div>
+
+                <button class="btn btn-sm btn-primary" ng-click="getSessions()"><span class="glyphicon glyphicon-refresh"></span>&nbsp;Refresh</button><br><br>
+                <span class="glyphicon glyphicon-info-sign"></span><abbr title="Only a partial of session id is displayed">&nbsp;<p style="font-size:12px;color:red;">Note!</p></abbr> 
               </div>
               <div style="display:none" id="updateUserId">   
                       <strong><span class="glyphicon glyphicon-refresh"></span>&nbsp;Update an exising user</strong>

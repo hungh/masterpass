@@ -3,11 +3,11 @@ from master.persistence.users_store import UserStore
 from master.persistence.pws_store import PwsStore
 from master.httpcontroller.login_controller import LoginController
 from master.sesscontroller.session_controller import SessionController
-from master.util import create_json_status
 from master.beans.users import User
 from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION, ALL_ACTIVE_SESSION, SESSION_USER_ID
 import bcrypt
 import json
+import math
 
 
 class UserController(ActionController):
@@ -45,7 +45,11 @@ class UserController(ActionController):
         all_sessions = SessionController().get_all_session()
         ret_session = []
         for session_id in all_sessions.keys():
-            ret_session.append({'user': all_sessions[session_id].get_attribute(SESSION_USER_ID), 'session': session_id})
+            session_bean = all_sessions[session_id]
+            if session_bean:
+                trimmed_index = math.trunc(len(session_id)/3)
+                ret_session.append({'user': session_bean.get_attribute(SESSION_USER_ID),
+                                    'session': session_id[0: trimmed_index]})
         return ret_session
 
     def get(self):
