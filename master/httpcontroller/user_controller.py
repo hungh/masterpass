@@ -2,8 +2,10 @@ from master.httpcontroller.action_controller import ActionController
 from master.persistence.users_store import UserStore
 from master.persistence.pws_store import PwsStore
 from master.httpcontroller.login_controller import LoginController
-from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION
+from master.sesscontroller.session_controller import SessionController
+from master.util import create_json_status
 from master.beans.users import User
+from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION, ALL_ACTIVE_SESSION, SESSION_USER_ID
 import bcrypt
 import json
 
@@ -36,6 +38,15 @@ class UserController(ActionController):
             self.user_store.update_user_with_hash(current_login_id, bcrypt.hashpw(self.new_password, bcrypt.gensalt()))
             # updating all pws entries
             PwsStore().change_all_pws_enc(self.current_login_id, self.password, self.new_password)
+
+    def get_user_sessions(self):
+        if not self.is_root():
+            return None
+        all_sessions = SessionController().get_all_session()
+        ret_session = []
+        for session_id in all_sessions.keys():
+            ret_session.append({'user': all_sessions[session_id].get_attribute(SESSION_USER_ID), 'session': session_id})
+        return ret_session
 
     def get(self):
         """
@@ -73,6 +84,9 @@ class UserController(ActionController):
     def other_action_mappings(self, action):
         if action == CURRENT_USER_ACTION:
             self.write_one_response(str_msg=str(self.current_login_id), all_cookies=[self._jsession_cookie])
+        elif action == ALL_ACTIVE_SESSION:
+            all_session = self.get_user_sessions()
+            self.write_one_response(str_msg=json.dumps(all_session), all_cookies=[self._jsession_cookie])
         elif action == CHANGE_PW_ACTION:
             if not LoginController.is_valid_user(self.current_login_id, self.password):
                 return "Incorrect password provided"

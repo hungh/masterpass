@@ -50,7 +50,7 @@
       <div class="jumbotron main modal-body">  
             <div style="display:block" id="workAreaId">    
                 <div class="first-column">
-                  <strong><span class="glyphicon glyphicon-download"></span>&nbsp;Retrieve and Update</strong><br>      
+                  <strong><span class="glyphicon glyphicon-cloud"></span>&nbsp;Retrieve and Update</strong><br>      
                   <small class="text-left">Select user:</small>
                   <select class="form-control"  ng-model="currUser" ng-options="user.login group by user.env_name for user in users">
                   </select> 
@@ -115,14 +115,14 @@
 
         <div class="jumbotron main modal-body" style="display:none" id="changeEnvId">
             <div class="form-group first-column">
-               <label for="newEnv">New Environment</label>
+               <label for="newEnv"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;New Environment</label>
                <input type="strong" placeholder="Enter a new env name" class="form-control" ng-model="newEnviron" id="newEnv"><br>
                <button type="submit" class="btn btn-primary" ng-click="createNewEnv()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Create New</button>
             </div>
             <div class="form-group second-column">               
-               <label for="newEnvTxt">Remove Environment</label>
+               <label for="newEnvTxt"><span class="glyphicon glyphicon-minus-sign"></span>&nbsp;Remove Environment</label>
                     <input class="form-control" id="newEnvTxt" placeholder="Type to search env" ng-model="searchEnv" data-toggle="tooltip" data-placement="right" title="Type to search a env"><br>
-                    <div class="panel-group" id="accordion">
+                    <div class="panel-group adjust-width" id="accordion">
 
                       <div class="panel panel-default" ng-repeat="env in environs | filter: searchEnv">
                         <div class="panel-heading" data-toggle="tooltip" data-placement="right" title="Click to expand">
@@ -137,8 +137,8 @@
                         </div>
                       </div>
                       
-                  </div>
-                  <div class="alert alert-danger" role="alert">Delete env will erase all entries under it!</div>
+                  </div>                  
+                  <span class="glyphicon glyphicon-warning-sign"></span><abbr title="Delete environment will erase all entries under it!">&nbsp;<p style="font-size:12px;color:red;">Warning!</p></abbr> 
             </div>            
         </div>
 

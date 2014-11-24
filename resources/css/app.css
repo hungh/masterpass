@@ -3,12 +3,21 @@
 	position: absolute;
 	top: 60px;
 	left: 20px;
+  width: 450px;
+}
+
+.main-admin {
+  width: 250px;
 }
 
 .welcome {
    position: absolute;
    top: 20px;
    left: 20px;
+}
+
+.adjust-width{
+  width: 170px;
 }
 
 .home{

@@ -29,6 +29,9 @@ class SessionController(metaclass=Singleton):
         except KeyError:
             pass
 
+    def get_all_session(self):
+        return self.all_session_beans
+
     def get_session(self, request_handler, will_create_new):
         """
         :param request_handler: master.handler.CustomHTTPHandler

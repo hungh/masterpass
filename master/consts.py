@@ -13,6 +13,7 @@ SESSION_USER_ID = "uid"
 # operations
 CHANGE_PW_ACTION = "changepw"
 CURRENT_USER_ACTION = "current"
+ALL_ACTIVE_SESSION = "active"
 GET_PWS_OWNER = "pwsowner"
 GET_ACTION = "get"
 ADD_ACTION = "add"

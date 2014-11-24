@@ -1,5 +1,4 @@
 from master.boostrap.db_client import SingleDBClient
-from master.persistence.pws_store import PwsStore
 from master.persistence.env_store import EnvStore
 from master.logger.file_logger import logger
 from pymongo import ASCENDING
