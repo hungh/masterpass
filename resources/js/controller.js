@@ -8,6 +8,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 		$scope.currEnviron = 'DEV';
 		$scope.newEnviron = '';
 		$scope.environs = []; 
+		$scope.show_admin = false;
 
 		var removeSelectedUser = function(removingLogin){
 			for(var i = 0; i < $scope.users.length; i++){
@@ -28,8 +29,11 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			$scope.environs = data;
 		});
 
-		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(data){
-			$scope.current_login = data;
+		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(current_user){
+			if(current_user == 'root'){
+				$scope.show_admin = true;
+			}
+			
 		});
 
 		httpPostGetService.httpPostGet('POST', '/pws/pwsowner', {}, function(data){
@@ -179,13 +183,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 				
 			});			
 		};
-
-		$scope.getAdminLink = function(){
-			if ($scope.current_login == 'root')
-				return "/admin.html";
-			return '#';
-		};
-		
+	
 		$scope.$on('addEnvionEvent', function(event, data) {				
         	$scope.environs.push(data);
        	});
