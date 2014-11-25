@@ -97,7 +97,14 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			          			callback: 
 				          			function(data){
 										if (data.stat){
-											$scope.currUser.password = maskText(data.msg, 'maskPasswordId');											
+											if ($scope.isMaskCheck){
+												$scope.currUser.password = data.msg;												
+												toTextInp('maskPasswordId');
+											}else{
+												$scope.currUser.password = maskText(data.msg, 'maskPasswordId');
+												toPasswordInp('maskPasswordId');												
+											}
+											
 										}else {
 											$window.alert(data.msg);
 										}

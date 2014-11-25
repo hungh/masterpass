@@ -10,10 +10,19 @@ var glb_postTransformFnc =  function(){
 
 var glb_formHeader = {'Content-Type': 'application/x-www-form-urlencoded'};
 
-var maskText = function(text, docId){	
-	var str1 = [];	
+var toPasswordInp = function(docId){
 	var inputElem = document.querySelector('#' + docId );
 	inputElem.type = 'password';
+};
+
+var toTextInp = function(docId){
+	var inputElem = document.querySelector('#' + docId );
+	inputElem.type = 'text';
+};
+
+var maskText = function(text, docId){	
+	var str1 = [];	
+	toPasswordInp(docId);
 	for (var i =0; i < text.length; i++) {  				
 		str1.push(String.fromCharCode(  text.charCodeAt(i) + (i + 1)* 2 ) ) ; 		
 	}	
@@ -23,8 +32,7 @@ var maskText = function(text, docId){
 
 var unMaskText = function(text, docId){	
 	var str1 = [];	
-	var inputElem = document.querySelector('#' + docId );
-	inputElem.type = 'text';
+	toTextInp(docId);
 	for (var i =0; i < text.length; i++) {  		
 		str1.push (String.fromCharCode(  text.charCodeAt(i) - (i + 1) * 2) ) ; 		
 	}
