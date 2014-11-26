@@ -30,6 +30,8 @@ REQUIREMENTS:
 
   or,
   $ wget https://code.google.com/p/py-bcrypt/downloads/detail?name=py-bcrypt-0.4.tar.gz&can=2&q=
+  $ cd py-bcrypt-0.4
+  sudo python3 setup.py install
 
   Note: on Ubuntu or Mint, you might need to run this command to install libffi
   
@@ -45,6 +47,11 @@ REQUIREMENTS:
   $ git clone git://github.com/mongodb/mongo-python-driver.git pymongo
   $ cd pymongo/
   $ python setup.py install
+
+  Installation for Python 3
+  $ git clone git://github.com/mongodb/mongo-python-driver.git pymongo
+  $ cd pymongo/
+  $ sudo python3 setup.py install
 
 * MongoDB:
 

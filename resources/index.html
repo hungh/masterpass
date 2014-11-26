@@ -17,6 +17,7 @@
   <link rel="stylesheet" href="/css/app.css">    
   <script src="/js/common/app-util.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+  <script src="/js/uibootstrap/ui-bootstrap-custom-tpls-0.12.0.min.js"></script>
   <script src="/js/login-controller.js"></script>
  </head>
  </head>
@@ -27,24 +28,51 @@
   </div>
   <br>
   
-  <div class="main" ng-app='login-app' ng-controller="loginController">    
+  <div ng-app='login-app'>
+    <div class="main" ng-controller="loginController">    
       <form ng-submit="login_submit()" role="form" autocomplete="{{getAutoComplete(autocomplete)}}">
           <div class="form-group">
             <label for="userid">User name:</label>
-  	        <input type="text" class="form-control" ng-model='login' id="userid">
+            <input type="text" class="form-control" ng-model='login' id="userid">
           </div>
           <div class="form-group">
             <label for="password">Password: </label>
-  	        <input type="password" class="form-control" ng-model='password' id="password">
+            <input type="password" class="form-control" ng-model='password' id="password">
           </div>
 
           <div class="checkbox">
             <label><input type="checkbox" ng-model="autocomplete"> Remember me</label>
           </div>
 
-          <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Login into application">Login</button>  	      
+          <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Login into application">Login</button><br>   
     </form>
+          <div ng-controller="forgotPasswordController">
+            <a href="#" ng-click="resetPasswordPopup()">Forgot Your Password?</a>  
+          </div>    
   </div>
- </body>
+
+  
+ <!-- popover -->
+  <script type="text/ng-template" id="forgotPassword.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Please enter your user name</h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+          <label for="userid" class="control-label">User Name:</label>
+          <input type="text" class="form-control" ng-model="userid" id="userid">
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="resetPassword(userid)">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+  </script>
+  <!---poe-->
+ 
+
+</div>
+  
+</body>
 </html>
 
