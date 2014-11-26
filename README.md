@@ -31,6 +31,10 @@ REQUIREMENTS:
   or,
   $ wget https://code.google.com/p/py-bcrypt/downloads/detail?name=py-bcrypt-0.4.tar.gz&can=2&q=
 
+  Note: on Ubuntu or Mint, you might need to run this command to install libffi
+  
+  sudo apt-get install  libffi-dev 
+
 
 * PyMongo:
 
