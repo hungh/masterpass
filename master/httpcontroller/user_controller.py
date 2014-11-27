@@ -30,6 +30,7 @@ class UserController(ActionController):
         self.last = None
         self.password = None
         self.new_password = None
+        self.email = None
         self.user_store = UserStore()
         ActionController.__init__(self, request_handler, action)
 
@@ -37,6 +38,7 @@ class UserController(ActionController):
         self.id = self.get_request_parameter('id')
         self.first = self.get_request_parameter('first')
         self.last = self.get_request_parameter('last')
+        self.email = self.get_request_parameter('email')
         self.password = self.get_request_parameter('password')
         self.new_password = self.get_request_parameter('new_password')
 
@@ -73,14 +75,18 @@ class UserController(ActionController):
             return None
         if self.id and self.password:
             hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
-            self.user_store.insert_new_user(User(self.id, self.first, self.last, hash_pw, False))
+            if self.email:
+                new_user = User(self.id, self.first, self.last, hash_pw, False, self.email)
+            else:
+                new_user = User(self.id, self.first, self.last, hash_pw, False)
+            self.user_store.insert_new_user(new_user)
             self.write_one_response(str_msg=USER_ADD_MSG, all_cookies=[self._jsession_cookie])
 
     def update(self):
         if not self.is_root():
             return None
         if self.id:
-            self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False))
+            self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False, self.email))
             self.write_one_response(str_msg=USER_UPDATE_MSG, all_cookies=[self._jsession_cookie])
 
     def delete(self):

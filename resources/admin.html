@@ -89,6 +89,12 @@
                           <input type="strong" class="form-control" ng-model="selectedUser.last" id="last">
                         </div>
 
+                        <div class="form-group">
+                          <label for="email">Email address:</label>
+                          <input type="email" class="form-control" id="email" ng-model="selectedUser.email">
+                        </div>
+
+
                         <button type="submit" class="btn btn-primary" ng-click="saveUser()"><span class="glyphicon glyphicon-save"></span>&nbsp;Update</button>
                       </form>                      
               </div>
@@ -109,6 +115,11 @@
                   <div class="form-group">
                     <label for="newLast"><small>Last Name:</small></label>
                     <input type="strong" class="form-control" ng-model="newLast" id="newLast">
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email">Email address:</label>
+                    <input type="email" class="form-control" id="email" ng-model="email" placeholder="Enter email">
                   </div>
 
                   <div class="form-group">

@@ -1,6 +1,7 @@
 from master.encryption.encrypt_bfish import MyBlowFish
 from master.sesscontroller.session_controller import SessionController
 from master.consts import SESSION_USER_ID
+from master.logger.file_logger import logger
 import json
 
 
@@ -47,3 +48,21 @@ def get_current_login_user_id(request_handler):
     """
     session_bean, was_created_new = SessionController().get_session(request_handler, will_create_new=False)
     return session_bean.get_attribute(SESSION_USER_ID)
+
+
+def get_optional_email(user, is_sub_script=False):
+    """
+    Return '' if there is no email
+    :param user: master.bean.users.User
+    :return: string  email address
+    """
+    try:
+        if is_sub_script:
+            email = user['email']
+        else:
+            email = user.email
+    except KeyError:
+        logger().warn('unable to get user email')
+        email = ''
+
+    return email

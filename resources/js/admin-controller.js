@@ -53,7 +53,7 @@ var adminApp = angular.module('admin-app', [])
 				return;
 			}				
 
-			var newUser = {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword};			
+			var newUser = {id: $scope.newId, first: $scope.newFirst, last: $scope.newLast, password: $scope.newPassword, email: $scope.email};			
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/user/add',
@@ -77,7 +77,7 @@ var adminApp = angular.module('admin-app', [])
 			    method: 'POST',
 			    url: '/user/update',
 			    transformRequest: transformReq,
-			    data: {id: $scope.selectedUser.id, first: $scope.selectedUser.first, last: $scope.selectedUser.last},
+			    data: {id: $scope.selectedUser.id, first: $scope.selectedUser.first, last: $scope.selectedUser.last, email: $scope.selectedUser.email},
 			    headers: glb_formHeader
 			}).success(function(status){
 				$window.alert(status);				

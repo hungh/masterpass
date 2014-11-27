@@ -1,5 +1,6 @@
 from master.boostrap.db_client import SingleDBClient
 from master.persistence.env_store import EnvStore
+from master.util import get_optional_email
 from master.logger.file_logger import logger
 from pymongo import ASCENDING
 
@@ -43,7 +44,7 @@ class UserStore:
     def get_all_users(self):
         all_users = []
         for user in self.db.users_col.find():
-            all_users.append({'id': user['uid'], 'first': user['first'], 'last': user['last']})
+            all_users.append({'id': user['uid'], 'first': user['first'], 'last': user['last'], 'email': get_optional_email(user, True)})
 
         return all_users
 
@@ -51,7 +52,8 @@ class UserStore:
         return self.db.users_col.find_one({'uid': uid})
 
     def update_user_by_id(self, user):
-        self.db.users_col.update({"uid": user.uid}, {"$set": {"first": user.first, "last": user.last}})
+        email = get_optional_email(user)
+        self.db.users_col.update({"uid": user.uid}, {"$set": {"first": user.first, "last": user.last, "email": email}})
 
     def update_user_with_hash(self, uid, hash_pw):
         self.db.users_col.update({"uid": uid}, {"$set": {"hash_pw": hash_pw}})
@@ -78,4 +80,3 @@ class UserStore:
         :return: mongodb collection
         """
         return self.db.users_col
-

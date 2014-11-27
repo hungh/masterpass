@@ -1,11 +1,14 @@
+from master.util import get_optional_email
+
 class User:
     """
     users who login to the web application
     """
-    def __init__(self, uid, first, last, hash_pw, admin):
+    def __init__(self, uid, first, last, hash_pw, admin, email=''):
         self._uid = uid
         self._first = first
         self._last = last
+        self._email = email
         self._hash_pw = hash_pw
         self._admin = admin
 
@@ -32,6 +35,14 @@ class User:
     @last.setter
     def set_last(self, last):
         self._last = last
+
+    @property
+    def email(self):
+        return self._email
+
+    @email.setter
+    def set_email(self, email):
+        self._email = email
 
     @property
     def hash_pw(self):
@@ -61,13 +72,15 @@ class User:
             'uid': self._uid,
             'first': self._first,
             'last': self._last,
+            'email': self._email,
             'hash_pw': self._hash_pw,
             'admin': self._admin
         }
 
     @staticmethod
     def to_user(one_user):
-        return User(one_user['uid'], one_user['first'], one_user['last'], one_user['hash_pw'], one_user['admin'])
+        email =  get_optional_email(one_user, True)
+        return User(one_user['uid'], one_user['first'], one_user['last'], one_user['hash_pw'], one_user['admin'], email)
 
 
 

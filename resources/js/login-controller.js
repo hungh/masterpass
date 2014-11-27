@@ -40,9 +40,18 @@ loginApp.controller('forgotPasswordController', ['$scope', '$http', '$window', '
 	};	
 }]);
 
-angular.module('login-app').controller('modalInstanceFPWController', ['$scope', '$window', '$modalInstance', function($scope, $window, $modalInstance){
+angular.module('login-app').controller('modalInstanceFPWController', ['$scope', '$http','$window', '$modalInstance', function($scope, $http, $window, $modalInstance){
 	$scope.resetPassword = function(userid){
-		$window.alert('resetPassword-email=' + userid);
+		$http({
+			    method: 'GET',
+			    url: '/account/reset?uid='+ userid			
+			}).success(function(msg){
+				$window.alert(msg);
+			})
+			.error(function(msg){
+				$window.alert(msg);
+			});
+
 		$modalInstance.dismiss('cancel');
 	};
 

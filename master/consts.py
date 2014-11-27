@@ -19,4 +19,5 @@ GET_ACTION = "get"
 ADD_ACTION = "add"
 UPDATE_ACTION = "update"
 DELETE_ACTION = "delete"
+RESET_ACTION = "reset"
 DEFAULT_PORT = 8009

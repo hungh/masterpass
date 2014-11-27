@@ -5,6 +5,7 @@ from master.httpcontroller.redirect_controller import RedirectController
 from master.httpcontroller.user_controller import UserController
 from master.httpcontroller.pws_controller import PwsController
 from master.httpcontroller.env_controller import EnvController
+from master.httpcontroller.account_controller import AccountController
 from master.logger.file_logger import logger
 from urllib.parse import urlparse
 import re
@@ -43,6 +44,8 @@ def getHttpController(pylet_path, request_handler):
     pws_op_match, pws_action = get_action_match('pws', pylet)
     # env operations controller
     env_op_match, env_action = get_action_match('env', pylet)
+    # reset password controller
+    reset_op_match, reset_action = get_action_match('account', pylet)
 
     logger().info('pylet=' + pylet + ';')
 
@@ -60,5 +63,7 @@ def getHttpController(pylet_path, request_handler):
         return PwsController(request_handler, pws_action)
     elif env_op_match:
         return EnvController(request_handler, env_action)
+    elif reset_op_match:
+        return AccountController(request_handler, reset_action)
 
     return BaseHttpController(request_handler)
