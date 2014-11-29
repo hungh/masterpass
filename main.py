@@ -1,5 +1,6 @@
 from master.handler.main_server import MainHttpServer
 from master.boostrap import initialize
+from master.mail import AuthHolder
 from master.consts import DEFAULT_PORT
 import sys
 
@@ -10,8 +11,10 @@ def main():
        by 'Hung Huynh'
     """
     binding_port = DEFAULT_PORT
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 3:
         binding_port = int(sys.argv[1])
+        # initialize auth holder
+        AuthHolder(sys.argv[2])
     else:
         print('Port is not provided, defaulting to ' + str(DEFAULT_PORT))
 

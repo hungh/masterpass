@@ -21,3 +21,9 @@ UPDATE_ACTION = "update"
 DELETE_ACTION = "delete"
 RESET_ACTION = "reset"
 DEFAULT_PORT = 8009
+
+#mail options
+MAIL_USER_NAME = "publicsmtp1@gmail.com"
+GMAIL_SMTP = "smtp.gmail.com"
+TSL_PORT   = 587
+
