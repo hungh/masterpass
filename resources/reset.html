@@ -12,18 +12,36 @@
   <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
   <meta http-equiv="pragma" content="no-cache" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Secure Storage - Login</title>
+  <title>Secure Storage - Reset Password</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="/css/app.css">    
   <script src="/js/common/app-util.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
   <script src="/js/uibootstrap/ui-bootstrap-custom-tpls-0.12.0.min.js"></script>
-  <script src="/js/login-controller.js"></script>
+  <script src="/js/reset-controller.js"></script>
  </head>
  </head>
  <body>
-    <script type="text/javascript">
-      alert('sid=' + getParameterByName('sid'))
-    </script>
+   
+    <div ng-app="reset-app">
+      <div class="jumbotron main modal-body" ng-controller="resetController">
+         <form ng-submit="changePassword()" role="form">
+            <div class="form-group">
+              <label>Please enter your new password:</label>           
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password:</label>
+              <input type="password" class="form-control" ng-model='password' id="password">
+            </div>
+            <div class="form-group">
+              <label for="newPassword">Confirm Password: </label>
+              <input type="password" class="form-control" ng-model='newPassword' id="newPassword">
+            </div>
+
+            <button type="submit" class="btn btn-info" >Change Password</button><br>   
+      </form>
+      </div>
+    </div>
  </body>
  </html>
