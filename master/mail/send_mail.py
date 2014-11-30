@@ -13,15 +13,11 @@ def send_gmail(receiver, message, smtp_password):
     server = smtplib.SMTP(GMAIL_SMTP, TSL_PORT)
     server.ehlo()
     server.starttls()
-    msg = "\r\n".join([
-      "Subject: Secure Storage - Reset Password",
-      message
-      ])
+    msg = "Subject: Secure Storage - Reset Password\r\n\r\n " + message
+
+
     mail_user_name = MAIL_USER_NAME
     server.login(mail_user_name,smtp_password)
     server.sendmail(MAIL_USER_NAME, receiver, msg)
     logger().info('sent email to {}'.format(receiver))
 
-
-#send_gmail('hungutd@gmail.com', 'Test mail from utd22')
-#print('Sent')

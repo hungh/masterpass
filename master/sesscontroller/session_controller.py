@@ -6,18 +6,6 @@ from uuid import uuid4
 
 
 class SessionController(metaclass=Singleton):
-    """
-    This is a singleton. There is only 1 SessionController per WEB application
-    """
-    _instance = None
-
-    @staticmethod
-    def get_session_timeout():
-        """
-        Get session time out in milliseconds
-        :return:
-        """
-        return SESSION_TIMEOUT
 
     def __init__(self):
         self.all_session_beans = dict()
@@ -93,6 +81,18 @@ class SessionController(metaclass=Singleton):
         :return: http.cookies.SimpleCookie
         """
         return CookieHandler.get_cookie(request_handler, 'JSESSIONID')
+
+    @staticmethod
+    def get_session_timeout():
+        """
+        Get session time out in milliseconds
+        :return:
+        """
+        return SESSION_TIMEOUT
+
+    @staticmethod
+    def gen_session_id():
+        return uuid4().hex
 
 
 
