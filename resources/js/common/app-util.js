@@ -38,3 +38,10 @@ var unMaskText = function(text, docId){
 	}
 	return str1.join("");
 };
+
+/**get parameter value from location */
+var getParameterByName = function(name) {name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}

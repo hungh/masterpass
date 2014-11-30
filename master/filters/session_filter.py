@@ -15,7 +15,7 @@ class SessionFilter(AbstractFilter):
     def filter(self, request_handler):
         curr_path = request_handler.get_path()
         logger().info(' session filter path=' + curr_path)
-        allow_paths = ['/login', '/account/reset', '/index.html', '/']
+        allow_paths = ['/login', '/account/reset', '/account/redirect', '/account/update', '/index.html', '/', 'reset.html']
         if curr_path in allow_paths \
                 or re.match(r'/js/[\./\w-]+.js$', curr_path) \
                 or re.match(r'[\w/]+.(?:html|jpg|css)$', curr_path):

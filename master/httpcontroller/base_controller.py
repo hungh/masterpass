@@ -49,6 +49,8 @@ class BaseHttpController():
             return
 
         file_full_path = BaseHttpController.get_resource() + self.request_handler.path
+        # in case file has parameters
+        file_full_path = file_full_path.split('?')[0]
         logger().info('file_full_path=' + file_full_path)
         try:
             f = open(file_full_path)

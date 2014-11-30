@@ -6,7 +6,7 @@ class MimeController:
         self.request_handler = request_handler
 
     def get_mime(self):
-        url_path = self.request_handler.path
+        url_path = self.request_handler.path.split('?')[0]
         mime_type = 'text/plain'
 
         if url_path.endswith('.html'):
