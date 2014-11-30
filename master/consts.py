@@ -8,6 +8,7 @@ USER_FIRST_NAME = "first"
 USER_LAST_NAME = "last"
 USER_HASH_PW = "hashpw"
 DB_SERVER_HOST = "localhost"
+WEB_SERVER_HOST = "localhost" # change if your server has a domain name
 DB_SERVER_PORT = 27017
 SESSION_USER_ID = "uid"
 # operations

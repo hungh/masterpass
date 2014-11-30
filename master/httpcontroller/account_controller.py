@@ -6,7 +6,7 @@ from master.httpcontroller.redirect_controller import RedirectController
 from master.volacontroller import VolatileController
 from master.beans.nosession.reset_session import ResetPasswordBean
 from master.mail import AuthHolder
-from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION
+from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION, WEB_SERVER_HOST
 from master.mail.send_mail import send_gmail
 from master.logger.file_logger import logger
 
@@ -44,7 +44,9 @@ class AccountController(BaseHttpController):
             # prepare volatile session
             sid = SessionController.gen_session_id()
             VolatileController().push_new_session(ResetPasswordBean(hex, user['uid']))
-            msg = 'Please click on the link below to reset your password\nhttp://localhost:8009/account/{}?sid={}'.format(REDIRECT_ACTION, sid)
+            web_server_port = AuthHolder().get_web_server_port()
+            msg = 'Please click on the link below to reset your password\nhttp://{}:{}/account/{}?sid={}'.\
+                format(WEB_SERVER_HOST, web_server_port, REDIRECT_ACTION, sid)
             send_gmail(email, msg, AuthHolder().get_smtp_pass())
         self.write_one_response(str_msg=EMAIL_SENT_MSG_1)
 

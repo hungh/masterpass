@@ -14,7 +14,7 @@ def main():
     if len(sys.argv) == 3:
         binding_port = int(sys.argv[1])
         # initialize auth holder
-        AuthHolder(sys.argv[2])
+        AuthHolder(sys.argv[2], binding_port)
     else:
         print('Port is not provided, defaulting to ' + str(DEFAULT_PORT))
 
