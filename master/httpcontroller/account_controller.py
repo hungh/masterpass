@@ -1,6 +1,7 @@
 from master.beans.nosession import AuthHolder
 from master.httpcontroller.base_controller import BaseHttpController
 from master.persistence.users_store import UserStore
+from master.persistence.pws_store import PwsStore
 from master.util import get_optional_email
 from master.sesscontroller.session_controller import SessionController
 from master.httpcontroller.redirect_controller import RedirectController
@@ -42,6 +43,8 @@ class AccountController(BaseHttpController):
             logger().info('User ID from vola session=' + user_id)
             new_hash = bcrypt.hashpw(self.new_password, bcrypt.gensalt())
             UserStore().update_user_with_hash(user_id, new_hash)
+            # WARNING: deleting all PWS entries by this owner
+            PwsStore().delete_pws_by_owner(user_id)
             VolatileController().invalidate(self.reset_id)
             self.write_one_response(str_msg="Your password has been reset")
         else:
