@@ -9,8 +9,10 @@ from master.mail import AuthHolder
 from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION, WEB_SERVER_HOST
 from master.mail.send_mail import send_gmail
 from master.logger.file_logger import logger
+import bcrypt
 
 EMAIL_SENT_MSG_1 = 'An email has been set to your email to reset password.'
+
 
 class AccountController(BaseHttpController):
     def __init__(self, request_handler, action):
@@ -29,12 +31,20 @@ class AccountController(BaseHttpController):
             self.reset_password()
         elif self.action == REDIRECT_ACTION and self.reset_id:
         # redirect to reset password page
-            RedirectController (self.request_handler,'/reset.html?sid=' + self.reset_id).write_body()
-        elif self.action ==  RESET_ACTION and self.user_id:
+            RedirectController(self.request_handler, '/reset.html?sid=' + self.reset_id).write_body()
+        elif self.action == RESET_ACTION and self.user_id:
             self.send_email()
 
     def reset_password(self):
-        self.write_one_response(str_msg="Your password has been reset")
+        volatile_controller = VolatileController()
+        if volatile_controller.is_valid_id(self.reset_id):
+            user_id = volatile_controller.get_session(self.reset_id).user_id
+            new_hash = bcrypt.hashpw(self.new_password, bcrypt.gensalt())
+            UserStore().update_user_with_hash(user_id, new_hash)
+            VolatileController().invalidate(self.reset_id)
+            self.write_one_response(str_msg="Your password has been reset")
+        else:
+            self.write_one_response(str_msg="Invalid credentials for a password reset link")
 
     def send_email(self):
         user = UserStore().get_user_by_id(self.user_id)

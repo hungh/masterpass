@@ -1,6 +1,6 @@
 class ResetPasswordBean:
     def __init__(self, sess_id, uid):
-        self.sess_id  = sess_id
+        self.sess_id = sess_id
         self.uid = uid
 
     @property
