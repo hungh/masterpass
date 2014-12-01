@@ -1,3 +1,4 @@
+from master.beans.nosession import AuthHolder
 from master.httpcontroller.base_controller import BaseHttpController
 from master.persistence.users_store import UserStore
 from master.util import get_optional_email
@@ -5,9 +6,8 @@ from master.sesscontroller.session_controller import SessionController
 from master.httpcontroller.redirect_controller import RedirectController
 from master.volacontroller import VolatileController
 from master.beans.nosession.reset_session import ResetPasswordBean
-from master.mail import AuthHolder
-from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION, WEB_SERVER_HOST
-from master.mail.send_mail import send_gmail
+from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION
+from master.mail.send_mail import send_mail
 from master.logger.file_logger import logger
 import bcrypt
 
@@ -39,6 +39,7 @@ class AccountController(BaseHttpController):
         volatile_controller = VolatileController()
         if volatile_controller.is_valid_id(self.reset_id):
             user_id = volatile_controller.get_session(self.reset_id).user_id
+            logger().info('User ID from vola session=' + user_id)
             new_hash = bcrypt.hashpw(self.new_password, bcrypt.gensalt())
             UserStore().update_user_with_hash(user_id, new_hash)
             VolatileController().invalidate(self.reset_id)
@@ -51,13 +52,14 @@ class AccountController(BaseHttpController):
         if user:
             email = get_optional_email(user, True)
             logger().info('email to reset: {}'.format(email))
-            # prepare volatile session
-            sid = SessionController.gen_session_id()
-            VolatileController().push_new_session(ResetPasswordBean(hex, user['uid']))
-            web_server_port = AuthHolder().get_web_server_port()
-            msg = 'Please click on the link below to reset your password\nhttp://{}:{}/account/{}?sid={}'.\
-                format(WEB_SERVER_HOST, web_server_port, REDIRECT_ACTION, sid)
-            send_gmail(email, msg, AuthHolder().get_smtp_pass())
+            if email:
+                # prepare volatile session
+                sid = SessionController.gen_session_id()
+                VolatileController().push_new_session(ResetPasswordBean(sid, user['uid']))
+                web_server_port = AuthHolder().get_web_server_port()
+                msg = 'Please click on the link below to reset your password\nhttp://{}:{}/account/{}?sid={}'.\
+                    format(AuthHolder().get_web_host_name(), web_server_port, REDIRECT_ACTION, sid)
+                send_mail(email, msg)
         self.write_one_response(str_msg=EMAIL_SENT_MSG_1)
 
 
