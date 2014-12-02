@@ -18,7 +18,15 @@ IMPORTANT:
 REQUIREMENTS:
 ------------
 
-* You must have Python 3, bcrypt and pycrypto and pymongo installed, plus MongoDB for database.
+* Python 3.4.x
+* bcrypt 
+* pycrypto
+* pymongo 
+* MongoDB 
+
+
+INSTALLATION:
+-------------
 
 * On Ubuntu or other environments:
 
@@ -39,7 +47,7 @@ REQUIREMENTS:
   You might need to run this command to install libffi if the above command fails
   
   $ sudo apt-get install  libffi-dev 
-  
+
 
 * pycrypto:
 
@@ -65,10 +73,6 @@ REQUIREMENTS:
   https://www.mongodb.org/downloads
 
 
-
-INSTALLATION:
--------------
-
 * Change the following values in the consts.py if your database runs on a different port:
 
   DB_SERVER_PORT = 27017
@@ -87,7 +91,7 @@ START/STOP SERVER:
 
 * To start/stop server:
 
-  ./bin/start_server.sh port_number
+  ./bin/start_server.sh
 
-  ./bin/stop_server.sh port_number 
+  ./bin/stop_server.sh port_number
 
