@@ -1,4 +1,5 @@
 # Quick test to make sure all dependencies are satisfied
+# Required: Python3, pymongo and bcrypt
 version=`python3 --version | cut -d" " -f2 |grep 3.4`
 if [ -z ${version} ] ; then
    echo "Python version 3.4.x is required"
