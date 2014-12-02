@@ -43,9 +43,9 @@ class PwsController(ActionController):
                 return
             clear_password = get_clear_text(self.master_password, pws_entry.enc)
             if clear_password:
-                self.write_one_response(str_msg=create_json_status(True, clear_password), all_cookies=[self._jsession_cookie])
+                self.write_one_response(str_msg=create_json_status(True, clear_password))
             else:
-                self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG), all_cookies=[self._jsession_cookie])
+                self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG))
 
     def add(self):
         if not self.enc:
@@ -53,7 +53,7 @@ class PwsController(ActionController):
         elif self.user and self.env:
             error_msg = self.pws_store.insert_new_pws(PwsEntry(self.current_login_id, self.user, self.enc, self.env))
             if not error_msg:
-                self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_ADD_MSG), all_cookies=[self._jsession_cookie])
+                self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_ADD_MSG))
             else:
                 self.write_one_response(str_msg=create_json_status(False, error_msg))
 
@@ -62,16 +62,16 @@ class PwsController(ActionController):
             self.write_one_response(str_msg=create_json_status(False, WRONG_PASSWORD_MSG))
         elif self.env and self.user and self.password:
             self.pws_store.update_pws_password(self.current_login_id, self.user, self.env, self.enc)
-            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_UPDATE_MSG), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_UPDATE_MSG))
 
     def delete(self):
         if self.user:
             self.pws_store.delete_pws_entry(self.current_login_id, self.user)
-            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_DELETE_MSG), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=create_json_status(True, PWS_ENTRY_DELETE_MSG))
 
     def get_pws_by_owner(self):
         all_pws_owner = self.pws_store.get_pws_by_owner(self.current_login_id)
-        self.write_one_response(str_msg=create_json_status(True, all_pws_owner), all_cookies=[self._jsession_cookie])
+        self.write_one_response(str_msg=create_json_status(True, all_pws_owner))
 
     def other_action_mappings(self, action):
         if action == GET_PWS_OWNER:

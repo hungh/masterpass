@@ -71,7 +71,7 @@ class UserController(ActionController):
         if not self.is_root():
             return None
         all_user = self.user_store.get_all_users()
-        self.write_one_response(str_msg=json.dumps(all_user), all_cookies=[self._jsession_cookie])
+        self.write_one_response(str_msg=json.dumps(all_user))
 
     def add(self):
         if not self.is_root():
@@ -84,14 +84,14 @@ class UserController(ActionController):
             else:
                 new_user = User(self.id, self.first, self.last, hash_pw, False)
             self.user_store.insert_new_user(new_user)
-            self.write_one_response(str_msg=USER_ADD_MSG, all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_ADD_MSG)
 
     def update(self):
         if not self.is_root():
             return None
         if self.id:
             self.user_store.update_user_by_id(User(self.id, self.first, self.last, None, False, self.email))
-            self.write_one_response(str_msg=USER_UPDATE_MSG, all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_UPDATE_MSG)
 
     def delete(self):
         if not self.is_root():
@@ -102,21 +102,21 @@ class UserController(ActionController):
 
         self.user_store.delete_user_by_id(self.id)
         SessionController().invalidate_session_by_login(self.id)
-        self.write_one_response(str_msg=USER_DELETE_MSG, all_cookies=[self._jsession_cookie])
+        self.write_one_response(str_msg=USER_DELETE_MSG)
 
     def other_action_mappings(self, action):
         if action == CURRENT_USER_ACTION:
-            self.write_one_response(str_msg=str(self.current_login_id), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=str(self.current_login_id))
 
         elif action == ALL_ACTIVE_SESSION:
             all_session = self.get_user_sessions()
-            self.write_one_response(str_msg=json.dumps(all_session), all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=json.dumps(all_session))
 
         elif action == CHANGE_PW_ACTION:
             if not LoginController.is_valid_user(self.current_login_id, self.password):
                 return USER_INVALID_PASS
             self.change_password(self.current_login_id)
-            self.write_one_response(str_msg=USER_CHANGE_PASS, all_cookies=[self._jsession_cookie])
+            self.write_one_response(str_msg=USER_CHANGE_PASS)
 
     def is_root(self):
         """
