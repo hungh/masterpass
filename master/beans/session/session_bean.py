@@ -53,12 +53,5 @@ class SessionBean:
         self.timestamp = time()
 
     def is_session_valid(self):
-        current_time = time()
-        print('current-time=' + str(current_time))
-        print('ex-time=' + str(self.timestamp))
-        time_gap = time() - self.timestamp
-        print('time-gap=' + str(time_gap))
-        print('SESSION_TIMEOUT=' + str(SESSION_TIMEOUT))
-        print("Eval=" + str(time_gap <= SESSION_TIMEOUT))
-        return time_gap <= SESSION_TIMEOUT
+        return time() - self.timestamp <= SESSION_TIMEOUT
 
