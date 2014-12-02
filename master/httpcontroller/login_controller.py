@@ -1,10 +1,12 @@
 from master.httpcontroller.base_controller import BaseHttpController
-from master.handler.cookie.cookie_handler import CookieHandler
 from master.sesscontroller.session_controller import SessionController
+
+from master.handler.cookie.cookie_handler import CookieHandler
 from master.persistence.users_store import UserStore
+from master.util import create_json_status
 from master.consts import SESSION_USER_ID
 from master.logger.file_logger import logger
-from master.util import create_json_status
+
 import bcrypt
 
 
@@ -19,17 +21,15 @@ class LoginController(BaseHttpController):
         logger().info("LoginController")
         self.login = self.get_request_parameter('login')
         self.password = self.get_request_parameter('password')
-        logger().info('Login=' + self.login + ';password=' + self.password)
 
     def write_body(self):
         if LoginController.is_valid_user(self.login, self.password):
             # create a new session
             new_http_session, is_new_jsession = SessionController().get_session(self.request_handler,
                                                                                 will_create_new=True)
-            # save password into http session as a key for other encryption and decryption
             new_http_session.set_attribute(SESSION_USER_ID, self.login)
-
             jsession_cookie = None
+
             if new_http_session is not None:
                 logger().info('user is authenticated.')
                 if is_new_jsession is True:

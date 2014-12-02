@@ -1,6 +1,8 @@
+from pymongo.errors import DuplicateKeyError
 from master.boostrap.db_client import SingleDBClient
 from master.beans.pws_entries import PwsEntry
 from master.encryption.encrypt_bfish import MyBlowFish
+
 from pymongo import ASCENDING
 
 
@@ -11,7 +13,11 @@ class PwsStore:
         self.db.pws_col.ensure_index([('owner', ASCENDING), ('login', ASCENDING)], unique=True)
 
     def insert_new_pws(self, pws_object):
-        self.db.pws_col.insert(pws_object.to_json())
+        try:
+            self.db.pws_col.insert(pws_object.to_json())
+        except DuplicateKeyError:
+            return "Duplicate entry found"
+        return None
 
     def get_pws_by_login_env(self, owner, login, env_name):
         return PwsEntry.to_pws(self.db.pws_col.find_one({'owner': owner, 'login': login, 'env_name': env_name}))
@@ -45,7 +51,6 @@ class PwsStore:
         :param owner: string id of the owner
         :param old_master_password: string old master password
         :param master_password: string new master password
-        :return:
         """
         updating_record = []
         for pws_entry in self.db.pws_col.find({'owner': owner}):

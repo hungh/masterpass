@@ -1,11 +1,10 @@
+from master.consts import BLACK_LIST, SPEED_THRESHOLD
 from master.logger.file_logger import logger
 from time import time
 import threading
 
 threadLock = threading.Lock()
 ip_dict = dict()
-thresh_hold = 0.00001
-black_list = ['10.9.11.19']
 
 
 class IPBlocker:
@@ -29,7 +28,7 @@ class IPBlocker:
             old_timestamp = ip_dict[client_address]
             time_gap = new_timestamp - old_timestamp
             logger().info('time-gap for \'' + client_address + '\':' + str(time_gap))
-            if time_gap <= thresh_hold:
+            if time_gap <= SPEED_THRESHOLD:
                 logger().warn(client_address + ' is being blocked')
                 return True
         except KeyError:
@@ -48,4 +47,4 @@ class IPBlocker:
 
     @staticmethod
     def is_in_black_list(client_address):
-        return client_address.strip() in black_list
+        return client_address.strip() in BLACK_LIST

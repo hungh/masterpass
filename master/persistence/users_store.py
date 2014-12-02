@@ -1,6 +1,7 @@
 from master.boostrap.db_client import SingleDBClient
 from master.persistence.env_store import EnvStore
 from master.util import get_optional_email
+
 from master.logger.file_logger import logger
 from pymongo import ASCENDING
 

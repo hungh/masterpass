@@ -3,7 +3,9 @@ import binascii
 
 
 class MyBlowFish:
-
+    """
+    Blow fish encryption and decryption
+    """
     def __init__(self, key):
         self.key = key
 

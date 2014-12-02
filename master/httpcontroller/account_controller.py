@@ -1,14 +1,18 @@
-from master.beans.nosession import AuthHolder
-from master.httpcontroller.base_controller import BaseHttpController
 from master.persistence.users_store import UserStore
 from master.persistence.pws_store import PwsStore
-from master.util import get_optional_email
+
 from master.sesscontroller.session_controller import SessionController
+
 from master.httpcontroller.redirect_controller import RedirectController
+from master.httpcontroller.base_controller import BaseHttpController
 from master.volacontroller import VolatileController
+
+from master.beans.nosession import AuthHolder
 from master.beans.nosession.reset_session import ResetPasswordBean
-from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION
+
 from master.mail.send_mail import send_mail
+from master.util import get_optional_email
+from master.consts import REDIRECT_ACTION, UPDATE_ACTION, RESET_ACTION
 from master.logger.file_logger import logger
 import bcrypt
 
@@ -16,13 +20,18 @@ EMAIL_SENT_MSG_1 = 'An email has been set to your email to reset password.'
 
 
 class AccountController(BaseHttpController):
+    """
+    Account controller for password reset
+    """
     def __init__(self, request_handler, action):
         BaseHttpController.__init__(self, request_handler)
         self.user_id = None
+        self.reset_id = None
+        self.new_password = None
         self.action = action
 
     def control(self):
-        logger().info("Account Controller")
+        logger().info("Account Controller contrl")
         self.user_id = self.get_request_parameter('uid')
         self.reset_id = self.get_request_parameter('sid')
         self.new_password = self.get_request_parameter('password')
@@ -31,20 +40,23 @@ class AccountController(BaseHttpController):
         if self.action == UPDATE_ACTION and self.reset_id and self.new_password:
             self.reset_password()
         elif self.action == REDIRECT_ACTION and self.reset_id:
-        # redirect to reset password page
             RedirectController(self.request_handler, '/reset.html?sid=' + self.reset_id).write_body()
         elif self.action == RESET_ACTION and self.user_id:
             self.send_email()
 
     def reset_password(self):
         volatile_controller = VolatileController()
+
         if volatile_controller.is_valid_id(self.reset_id):
+
             user_id = volatile_controller.get_session(self.reset_id).user_id
-            logger().info('User ID from vola session=' + user_id)
+            logger().info('User ID from volatile session=' + user_id)
             new_hash = bcrypt.hashpw(self.new_password, bcrypt.gensalt())
             UserStore().update_user_with_hash(user_id, new_hash)
+
             # WARNING: deleting all PWS entries by this owner
             PwsStore().delete_pws_by_owner(user_id)
+
             VolatileController().invalidate(self.reset_id)
             self.write_one_response(str_msg="Your password has been reset")
         else:

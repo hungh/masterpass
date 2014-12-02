@@ -10,7 +10,6 @@ class SessionBean:
         """
         constructor
         :param sess_id: session id
-        :return:
         """
         self.sess_id = sess_id
         self.sess_attributes = {}

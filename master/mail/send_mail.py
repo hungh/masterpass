@@ -9,10 +9,8 @@ MAIL_SUBJECT = 'Secure Storage - Reset Password'
 
 def send_gmail(receiver, message, smtp_password):
     """
-
     :param receiver: string email of receiver
     :param message:  string mail content
-    :return: None
     """
     server = smtplib.SMTP(AuthHolder().get_smtp_server(), TSL_PORT)
     server.ehlo()
@@ -25,9 +23,15 @@ def send_gmail(receiver, message, smtp_password):
 
 
 def send_my_mail(receiver, message, smtp_server):
+    """
+    :param receiver: receiver's email address
+    :param message: email content
+    :param smtp_server: string SMTP server name
+
+    """
     msg = MIMEText(message)
     msg['Subject'] = MAIL_SUBJECT
-    msg['From'] = AuthHolder().get_google_mail()
+    msg['From'] = 'Master password'
     msg['To'] = receiver
     s = smtplib.SMTP(smtp_server)
     s.send_message(msg)

@@ -1,5 +1,6 @@
 from master.util import get_optional_email
 
+
 class User:
     """
     users who login to the web application
@@ -79,7 +80,7 @@ class User:
 
     @staticmethod
     def to_user(one_user):
-        email =  get_optional_email(one_user, True)
+        email = get_optional_email(one_user, True)
         return User(one_user['uid'], one_user['first'], one_user['last'], one_user['hash_pw'], one_user['admin'], email)
 
 

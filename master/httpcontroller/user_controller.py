@@ -1,10 +1,13 @@
 from master.httpcontroller.action_controller import ActionController
-from master.persistence.users_store import UserStore
-from master.persistence.pws_store import PwsStore
 from master.httpcontroller.login_controller import LoginController
 from master.sesscontroller.session_controller import SessionController
+
+from master.persistence.users_store import UserStore
+from master.persistence.pws_store import PwsStore
+
 from master.beans.users import User
 from master.consts import CURRENT_USER_ACTION, CHANGE_PW_ACTION, ALL_ACTIVE_SESSION, SESSION_USER_ID
+
 import bcrypt
 import json
 import math
@@ -20,10 +23,9 @@ ROOT_NO_DELETE = 'admin user cannot be deleted.'
 class UserController(ActionController):
     def __init__(self, request_handler,  action):
         """
-        Constructor (1)
+        Constructor
         :param request_handler: http.server.SimpleHTTPRequestHandler
         :param action: string get action (add, get and update) user
-        /user/add?  /user/get?uid=jin u/user/update?uid=jin
         """
         self.id = None
         self.first = None
@@ -53,6 +55,7 @@ class UserController(ActionController):
             return None
         all_sessions = SessionController().get_all_session()
         ret_session = []
+
         for session_id in all_sessions.keys():
             session_bean = all_sessions[session_id]
             if session_bean:
@@ -75,6 +78,7 @@ class UserController(ActionController):
             return None
         if self.id and self.password:
             hash_pw = bcrypt.hashpw(self.password, bcrypt.gensalt())
+
             if self.email:
                 new_user = User(self.id, self.first, self.last, hash_pw, False, self.email)
             else:
@@ -95,6 +99,7 @@ class UserController(ActionController):
         # you can not delete root himself
         if self.id == 'root':
             return ROOT_NO_DELETE
+
         self.user_store.delete_user_by_id(self.id)
         SessionController().invalidate_session_by_login(self.id)
         self.write_one_response(str_msg=USER_DELETE_MSG, all_cookies=[self._jsession_cookie])
@@ -102,9 +107,11 @@ class UserController(ActionController):
     def other_action_mappings(self, action):
         if action == CURRENT_USER_ACTION:
             self.write_one_response(str_msg=str(self.current_login_id), all_cookies=[self._jsession_cookie])
+
         elif action == ALL_ACTIVE_SESSION:
             all_session = self.get_user_sessions()
             self.write_one_response(str_msg=json.dumps(all_session), all_cookies=[self._jsession_cookie])
+
         elif action == CHANGE_PW_ACTION:
             if not LoginController.is_valid_user(self.current_login_id, self.password):
                 return USER_INVALID_PASS

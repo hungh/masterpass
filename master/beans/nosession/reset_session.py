@@ -1,4 +1,8 @@
 class ResetPasswordBean:
+    """
+    Represent a user's temporary  reset password information.
+    This data will be erased once password reset completes successfully
+    """
     def __init__(self, sess_id, uid):
         self.sess_id = sess_id
         self.uid = uid

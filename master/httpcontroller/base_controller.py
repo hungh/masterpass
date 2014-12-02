@@ -1,9 +1,12 @@
 from master.mimecontroller.mime_controller import MimeController
 from master.sesscontroller.session_controller import SessionController
-from master.logger.file_logger import logger
+
 from master.consts import RESOURCES_HOME
-from abc import ABCMeta, abstractmethod
+from master.logger.file_logger import logger
+
 from urllib.parse import urlparse, parse_qs
+from abc import ABCMeta, abstractmethod
+
 import cgi
 import os
 

@@ -2,6 +2,9 @@ from master.meta.singleton import Singleton
 
 
 class AuthHolder(metaclass=Singleton):
+    """
+    A holder for the application's configuration, database server, SMTP server
+    """
     def __init__(self, web_server_port=None,
                  web_host_name=None,
                  google_mail=None,
@@ -37,8 +40,8 @@ class AuthHolder(metaclass=Singleton):
         return self.mongod_server
 
     def __str__(self):
-        return 'Listening on:' + str(self.web_server_port) + "\n" + \
-                'Web server name:' + self.web_host_name + "\n" +\
-               'Gmail:' + self.google_mail + "\n" +\
-                'MongoDB:' + self.mongod_server + "\n" +\
-               'SMTP Server:' + self.smtp_server + "\n"
+        return '(*) Listening on:' + str(self.web_server_port) + "\n" + \
+            '(*) Web server name:' + self.web_host_name + "\n" +\
+            '(*) Gmail address:' + self.google_mail + "\n" +\
+            '(*) MongoDB server:' + self.mongod_server + "\n" +\
+            '(*) SMTP server:' + self.smtp_server + "\n"

@@ -1,12 +1,13 @@
 from master.filters.abstract_filter import AbstractFilter
 from master.sesscontroller.session_controller import SessionController
 from master.logger.file_logger import logger
+from master.consts import ALLOWED_PATHS
 import re
 
 
 class SessionFilter(AbstractFilter):
     """
-    Except /login, any other request coming in requires a session
+    Except ALLOWED_PATHS, any other request coming in requires a session
     """
 
     def __init__(self):
@@ -15,8 +16,7 @@ class SessionFilter(AbstractFilter):
     def filter(self, request_handler):
         curr_path = request_handler.get_path()
         logger().info(' session filter path=' + curr_path)
-        allow_paths = ['/login', '/account/reset', '/account/redirect', '/account/update', '/index.html', '/', 'reset.html']
-        if curr_path in allow_paths \
+        if curr_path in ALLOWED_PATHS \
                 or re.match(r'/js/[\./\w-]+.js$', curr_path) \
                 or re.match(r'[\w/]+.(?:html|jpg|css)$', curr_path):
           

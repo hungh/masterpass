@@ -1,3 +1,4 @@
+#!/bin/sh
 if [ "$#" -ne 1 ] ; then
    echo "please pass a port number";
 else

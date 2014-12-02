@@ -1,12 +1,16 @@
 from master.httpcontroller.base_controller import BaseHttpController
 from master.sesscontroller.session_controller import SessionController
-from master.logger.file_logger import logger
+
 from master.util import get_current_login_user_id
 from master.consts import ADD_ACTION, UPDATE_ACTION, GET_ACTION, DELETE_ACTION
+from master.logger.file_logger import logger
 from abc import ABCMeta, abstractmethod
 
 
 class ActionController(BaseHttpController):
+    """
+    Abstract class for any action controller
+    """
     __metaclass__ = ABCMeta
 
     def __init__(self, request_handler,  action):
@@ -73,7 +77,6 @@ class ActionController(BaseHttpController):
         """
         Return string if error, None otherwise
         :param action: string HTTP query
-        :return:
         """
         pass
 

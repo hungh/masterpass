@@ -1,7 +1,9 @@
 from master.handler.cookie.cookie_handler import CookieHandler
 from master.beans.session.session_bean import SessionBean
-from master.consts import SESSION_TIMEOUT, SESSION_USER_ID
 from master.meta.singleton import Singleton
+
+from master.consts import SESSION_TIMEOUT, SESSION_USER_ID
+
 from uuid import uuid4
 
 

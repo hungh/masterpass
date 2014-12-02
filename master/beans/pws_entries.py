@@ -1,10 +1,12 @@
 class PwsEntry:
+    """
+    An login/password entry to be persisted into database
+    """
     def __init__(self, owner, login, enc, env_name):
         self._owner = owner
         self._login = login
         self._enc = enc
         self._env_name = env_name
-        #self._created set by mongodb
 
     @property
     def owner(self):

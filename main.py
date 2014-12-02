@@ -7,10 +7,9 @@ import argparse
 
 def main():
     """
-    Beta version of a Simple HTTP server
-       by 'Hung Huynh'
+     Main application entry point
     """
-    parser = argparse.ArgumentParser(description="Python Web Server Options")
+    parser = argparse.ArgumentParser(description="Python web server options")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("-v", "--verbose", action="store_true")
     group.add_argument("-q", "--quiet", action="store_true")
