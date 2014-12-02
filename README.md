@@ -9,18 +9,18 @@ The web server is using Python HTTP request handler.
 IMPORTANT:
 ---------
 
-* You must change root password (TODO:) before setting up and using this application.
+* Default admin access is root/password. 
+* You must change root password after first login.
 * All users passwords are hashed with bcrypt.
-* Each data entry (which is a user name and password pair) belonging to a login user is encrypted
-  with password entry as key using BlowFish
-* Default root password to enter the application is 'password', once you log in as root you must change
-  your password.
+* Users' data is encrypted using BlowFish.  
  
 
 REQUIREMENTS:
 ------------
 
-* Python dev 3.4, to install on Debian environment:
+* You must have Python 3, bcrypt and pycrypto and pymongo installed, plus MongoDB for database.
+
+* On Ubuntu or other environments:
 
   $ sudo apt-get install python3.4-dev
 
@@ -29,29 +29,35 @@ REQUIREMENTS:
   $ pip install bcrypt
 
   or,
+
   $ wget https://code.google.com/p/py-bcrypt/downloads/detail?name=py-bcrypt-0.4.tar.gz&can=2&q=
+
   $ cd py-bcrypt-0.4
-  sudo python3 setup.py install
 
-  Note: on Ubuntu or Mint, you might need to run this command to install libffi
+  $ sudo python3 setup.py install
+
+  You might need to run this command to install libffi if the above command fails
   
-  sudo apt-get install  libffi-dev 
+  $ sudo apt-get install  libffi-dev 
+  
+
+* pycrypto:
+
+  $ pip install pycrypto
 
 
-* PyMongo:
+* pyMongo:
 
-  pip install pymongo
+  $ pip install pymongo
 
   or, install from source
 
   $ git clone git://github.com/mongodb/mongo-python-driver.git pymongo
-  $ cd pymongo/
-  $ python setup.py install
 
-  Installation for Python 3
-  $ git clone git://github.com/mongodb/mongo-python-driver.git pymongo
   $ cd pymongo/
+
   $ sudo python3 setup.py install
+
 
 * MongoDB:
 
@@ -63,19 +69,13 @@ REQUIREMENTS:
 INSTALLATION:
 -------------
 
-* under 'masterpass', change the following values in the consts.py file for your need:
-
-  USER_HOME = '/home/dir/'
-
-  PROJECT_HOME = '/home/dir/masterpass'  
-
-  DB_USERS_LOCATION = '/home/dir/data/db/users.db'  
+* Change the following values in the consts.py if your database runs on a different port:
 
   DB_SERVER_PORT = 27017
 
 * To start mongodb:
 
-   mongod --dbpath
+   mongod --dbpath=/dir/to/data
 
    This will start MongoDB server at default port 27017
 
@@ -85,14 +85,9 @@ INSTALLATION:
 START/STOP SERVER:
 -----------------
 
-* To start server:
-
-  From project home masterpass, type
+* To start/stop server:
 
   ./bin/start_server.sh port_number
 
   ./bin/stop_server.sh port_number 
-
-  to stop
-
 
