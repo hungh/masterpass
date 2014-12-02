@@ -1,7 +1,8 @@
 /** login controller */
 
-var adminApp = angular.module('admin-app', [])
-	.controller('adminController', ['$scope', '$window', '$http', 'transformReq', function($scope, $window, $http, transformReq){		
+angular.module('admin-app', [])
+.service('transformReq', glb_postTransformFnc)
+.controller('adminController', ['$scope', '$window', '$http', 'transformReq', function($scope, $window, $http, transformReq){		
 
 		$http({
 		    method: 'GET',
@@ -11,7 +12,7 @@ var adminApp = angular.module('admin-app', [])
 			$scope.selectedUser = $scope.users [0];
 			$scope.selectedMenu = $scope.memus [0]
 		}).error(function(err_msg){
-			alert(err_msg);
+			$window.location.href = "/";
 		});		
 
 		$scope.memus = ['addUserId', 'removeUserId', 'updateUserId', 'adminStatId'];		
@@ -36,9 +37,7 @@ var adminApp = angular.module('admin-app', [])
 			}).success(function(data){
 				$scope.totalLogins = data.length;			
 				$scope.allSessions = data;
-			}).error(function(err_msg){
-				$window.alert(err_msg);
-			});			
+			});
 		};
 
 		$scope.getSessions();
@@ -111,6 +110,3 @@ var adminApp = angular.module('admin-app', [])
 		};
 		
 	}]);
-
-
-adminApp.factory('transformReq', glb_postTransformFnc);

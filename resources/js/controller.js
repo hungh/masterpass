@@ -26,19 +26,22 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 					break;
 				}
 			}
-		};	
-		
-		httpPostGetService.httpPostGet('GET', '/env/get', {}, function(data){
-			$scope.environs = data;
-		});
+		};			
 
-		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(appLoginName){
+		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(appLoginName){			
 			$scope.appLoginName  = appLoginName;
 			if(appLoginName == 'root'){
 				$scope.showAdmin = true;
 			}
 			
+		}, function(){
+			$window.location.href = "/";
 		});
+
+		httpPostGetService.httpPostGet('GET', '/env/get', {}, function(data){			
+			$scope.environs = data;
+		}, function(){});
+
 
 		httpPostGetService.httpPostGet('POST', '/pws/pwsowner', {}, function(data){
 			if (data.stat){
@@ -46,7 +49,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			}else {
 				$window.alert(data.msg);
 			}
-		});
+		}, function(){});
 
 		$scope.createNewEnv = function(){			
 			if ($scope.newEnviron){		
@@ -283,7 +286,14 @@ mainApp.factory('transformReq', glb_postTransformFnc);
 
 mainApp.factory('httpPostGetService', ['$http', '$window', 'transformReq', function($http, $window, transformReq){
 	return {
-		httpPostGet: function(method, urlStr, postData, callback){
+		httpPostGet: function(method, urlStr, postData, callback, errorHandler){
+				var processError = function(err_msg){
+						if(errorHandler){
+							errorHandler.call(this);
+						}else{
+							$window.alert('Error:' + err_msg);
+						}	
+					};
 				if(method == 'GET'){
 					$http({
 				    	method: 'GET',
@@ -291,7 +301,7 @@ mainApp.factory('httpPostGetService', ['$http', '$window', 'transformReq', funct
 					}).success(function(data){
 						callback.call(this, data);
 					}).error(function(err_msg){
-						$window.alert('Error:' + err_msg);
+						processError(err_msg);				
 					});			
 				}else if (method == 'POST'){
 					$http({
@@ -303,7 +313,7 @@ mainApp.factory('httpPostGetService', ['$http', '$window', 'transformReq', funct
 					}).success(function(data){
 						callback.call(this, data)
 					}).error(function(err_msg){
-					  	$window.alert('Error:' + err_msg);
+					  	processError(err_msg);
 					});
 				}		
 			}

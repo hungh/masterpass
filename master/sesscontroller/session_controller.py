@@ -23,7 +23,7 @@ class SessionController(metaclass=Singleton):
     def invalidate_session(self, session_id):
         try:
             print('[DEBUG] invalidating session id=' + session_id)
-            self.all_session_beans[session_id] = None
+            del self.all_session_beans[session_id]
         except KeyError:
             pass
 

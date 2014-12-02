@@ -1,7 +1,7 @@
 from master.mimecontroller.mime_controller import MimeController
 from master.sesscontroller.session_controller import SessionController
 
-from master.consts import RESOURCES_HOME
+from master.consts import RESOURCES_HOME, TEMPLATE_404_ERROR
 from master.logger.file_logger import logger
 
 from urllib.parse import urlparse, parse_qs
@@ -58,7 +58,7 @@ class BaseHttpController():
         try:
             f = open(file_full_path)
         except FileNotFoundError:
-            self.write_one_response(response_code=404, str_msg='404 ERROR: File not found.')
+            self.write_one_response(response_code=404, str_msg=TEMPLATE_404_ERROR)
             return
         finally:
             if f:

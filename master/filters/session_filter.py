@@ -18,7 +18,7 @@ class SessionFilter(AbstractFilter):
         logger().info(' session filter path=' + curr_path)
         if curr_path in ALLOWED_PATHS \
                 or re.match(r'/js/[\./\w-]+.js$', curr_path) \
-                or re.match(r'[\w/]+.(?:html|jpg|css)$', curr_path):
+                or re.match(r'[\w/]+.(?:html|jpg|png|css)$', curr_path):
           
             return True, ""
 
@@ -26,6 +26,8 @@ class SessionFilter(AbstractFilter):
         session_bean, is_new_jsession = session_controller.get_session(request_handler, False)
         if session_bean:
             if not session_bean.is_session_valid():
+                # invalidate expired session
+                session_controller.invalidate_session(session_bean.session_id)
                 return False, SESSION_EXPIRED
             logger().info(" SessionFilter session_id=" + session_bean.session_id)
         else:

@@ -53,9 +53,9 @@ mainApp.controller('changepwController', ['$scope', '$http', '$window', 'transfo
 			    data: {password: $scope.password, new_password: $scope.newPassword},
 			    headers: glb_formHeader
 			}).success(function(status){			
-				alert(status);
+				$window.alert(status);
 			}).error(function(err_msg){
-				alert(err_msg);
+				$window.alert(err_msg);
 			});			
 	};
 }]);

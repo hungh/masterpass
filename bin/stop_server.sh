@@ -12,7 +12,7 @@ else
 	echo "Checking if port is shutdown completely..."
 	while [ True ]; do
 	    binding_port=`netstat  -ap 2>&1 | egrep -o ${port_num}`
-	    if [ -z ${binding_port} ] ; then
+	    if [ -z "${binding_port}" ] ; then
 	        break;
 	    fi
 	    sleep 2
