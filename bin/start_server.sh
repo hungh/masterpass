@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [ ! -z $1 ] ;then
+    echo "This is an interactive script and therefore does not take any command line arguments."
+    exit 1;
+fi
 options=""    
 read -p "Please enter HTTP server port number('8009'):" WEB_PORT
 if [ ! -z ${WEB_PORT} ] ; then

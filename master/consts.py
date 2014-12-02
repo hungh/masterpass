@@ -6,8 +6,8 @@ USER_HOME = expanduser("~")
 # path to web application's resources
 RESOURCES_HOME = USER_HOME + '/masterpass/resources'
 
-# web application session time-out
-SESSION_TIMEOUT = 180000
+# web application session time-out in seconds
+SESSION_TIMEOUT = 1800.0  # ~ 30 minutes
 
 # keys
 USER_ID = "id"
@@ -53,4 +53,8 @@ BLACK_LIST = ['10.9.11.19']
 
 # request speed threshold
 SPEED_THRESHOLD = 0.00001
+
+# error messages
+NOT_AUTHORIZED = 'Not authorize to use application.'
+SESSION_EXPIRED = "Your session has expired."
 

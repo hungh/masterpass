@@ -30,8 +30,8 @@ class SessionBean:
         :param attr_value: object
         :return:
         """
-        self.error_if_session_valid()
-        self.sess_attributes[attr_key] = attr_value
+        if self.is_session_valid():
+            self.sess_attributes[attr_key] = attr_value
 
     def get_attribute(self, attr_key):
         """
@@ -39,8 +39,9 @@ class SessionBean:
         :param attr_key: string key attribute
         :return: object
         """
-        self.error_if_session_valid()
-        return self.sess_attributes.get(attr_key)
+        if self.is_session_valid():
+            return self.sess_attributes.get(attr_key)
+        return None
 
     def re_use_session(self, new_sess_id):
         """
@@ -51,9 +52,13 @@ class SessionBean:
         self.sess_attributes.clear()
         self.timestamp = time()
 
-    def error_if_session_valid(self):
-        """
-        Throw ValueError exception if session expires
-        """
-        if self.timestamp + SESSION_TIMEOUT <= time():
-            raise ValueError('Session timed out.')
+    def is_session_valid(self):
+        current_time = time()
+        print('current-time=' + str(current_time))
+        print('ex-time=' + str(self.timestamp))
+        time_gap = time() - self.timestamp
+        print('time-gap=' + str(time_gap))
+        print('SESSION_TIMEOUT=' + str(SESSION_TIMEOUT))
+        print("Eval=" + str(time_gap <= SESSION_TIMEOUT))
+        return time_gap <= SESSION_TIMEOUT
+

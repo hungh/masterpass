@@ -5,8 +5,6 @@ from master.blocker.ip_blocker import IPBlocker
 from urllib.parse import urlparse
 import http.server
 
-NOT_AUTHORIZED = 'Not authorize to use application.'
-
 
 class CustomHTTPHandler(http.server.SimpleHTTPRequestHandler):
     """
@@ -29,7 +27,7 @@ class CustomHTTPHandler(http.server.SimpleHTTPRequestHandler):
             http_controller = getHttpController(self.path, self)
             http_controller.process()
         else:
-            self.filter_fail(NOT_AUTHORIZED)
+            self.filter_fail(msg)
 
     def do_POST(self):
         if self.no_op:
@@ -40,7 +38,7 @@ class CustomHTTPHandler(http.server.SimpleHTTPRequestHandler):
             http_controller = getHttpController(self.path, self)
             http_controller.process()
         else:
-            self.filter_fail(NOT_AUTHORIZED)
+            self.filter_fail(msg)
 
     def get_path(self):
         return urlparse(self.path).path
