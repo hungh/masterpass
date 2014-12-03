@@ -8,7 +8,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 		$scope.currUser = $scope.users[0];
 		/** log-in name to access application*/
 		$scope.appLoginName = '';
-		$scope.currEnviron = 'DEV';
+		$scope.currEnviron = '';
 		$scope.newEnviron = '';
 		$scope.environs = []; 
 		$scope.showAdmin = false;
@@ -28,28 +28,32 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			}
 		};			
 
+		var handleError =  function(msg){
+			$scope.workAreaMsg = msg;
+		};
+
 		httpPostGetService.httpPostGet('GET', '/user/current', {}, function(appLoginName){			
 			$scope.appLoginName  = appLoginName;
 			if(appLoginName == 'root'){
 				$scope.showAdmin = true;
 			}
 			
-		}, function(){
-			$window.location.href = "/";
-		});
+		}, handleError);
 
 		httpPostGetService.httpPostGet('GET', '/env/get', {}, function(data){			
 			$scope.environs = data;
-		}, function(){});
+		}, function(msg){
+			$scope.envErrMsg = msg;
+		}, handleError);
 
 
 		httpPostGetService.httpPostGet('POST', '/pws/pwsowner', {}, function(data){
 			if (data.stat){
 				$scope.users = data.msg;
 			}else {
-				$window.alert(data.msg);
+				$scope.workAreaMsg = data.msg;
 			}
-		}, function(){});
+		}, handleError);
 
 		$scope.createNewEnv = function(){			
 			if ($scope.newEnviron){		
@@ -57,11 +61,13 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 					if (data.stat){
 						environService.push($scope.newEnviron);			 				
 					}
-					$window.alert(data.msg);	
+					$scope.envErrMsg = data.msg;	
+					$scope.msgType = 'info';
 					
 				});									
 			}else{
-				$window.alert('Please enter the environment name.');
+				$scope.envErrMsg = 'Please enter the environment name.';
+				$scope.msgType = 'warning';
 			}			
 		};
 
@@ -77,14 +83,15 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 						});
 						$scope.users = new_users;	
 					}
-					$window.alert(data.msg);						
+					$scope.envErrMsg = data.msg;						
+					$scope.msgType = 'info';
 				});	
 		};
 
 		/** functions */
 		$scope.getUserPassword = function(){						
 			if(!$scope.currUser || !$scope.currUser.login || !$scope.currUser.env_name ){
-				$window.alert('Please select an entry from drop down');
+				$scope.workAreaMsg = 'Please select an entry from drop down';
 				return;
 			}
 
@@ -109,7 +116,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 											}
 											
 										}else {
-											$window.alert(data.msg);
+											$scope.workAreaMsg = data.msg;
 										}
 									}								
 			          		};
@@ -118,18 +125,23 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			});	
 		};
 
-		$scope.addPassword = function(){
+		$scope.addPassword = function(){				
+			if(!$scope.currEnviron){
+				$scope.workAreaMsg = 'Please select an environment';
+				return;	
+			}
+		
 			if (!$scope.username){
-				$window.alert('Please enter user name');
+				$scope.workAreaMsg = 'Please enter user name';
 				return;
 			}
-			if(!$scope.currEnviron){
-				$window.alert('Please select an environment');
+			if(!$scope.password){
+				$scope.workAreaMsg = 'Please enter password entry';
 				return;	
 			}
-			if(!$scope.password){
-				$window.alert('Please enter password entry');
-				return;	
+			if($scope.password != $scope.confirmPassword){
+				$scope.workAreaMsg = 'Your password don\'t match';
+				return;		
 			}
 
 			$modal.open({
@@ -157,7 +169,7 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 
 		$scope.updateUserPassword = function(){
 			if(!$scope.currUser || !$scope.currUser.login) {				
-				$window.alert('Please select an entry from the drop-down');
+				$scope.workAreaMsg = 'Please select an entry from the drop-down';
 				return;
 			}			
 			if(!$scope.currUser.password){
@@ -236,10 +248,24 @@ mainApp.controller('pwsEntryController', ['$scope', '$http', '$window', 'environ
 			
 		};  
 
+		$scope.showNewPassword = function(pwIds){
+			for(var i = 0; i < pwIds.length; i++){
+				if($scope.isShownPassword){
+					toTextInp(pwIds[i]);
+				}else{
+					toPasswordInp(pwIds[i]);								
+				}				
+			}			
+		};
+
 	}]);
 
 angular.module('main').controller('modalInstanceController', ['$scope', '$http', '$window', '$modalInstance', 'transformReq', 'modalData', function($scope, $http, $window, $modalInstance, transformReq, modalData){
-	$scope.updateGetPwsUserPassword = function(masterPassword){				
+	$scope.updateGetPwsUserPassword = function(masterPassword){		
+		if (!masterPassword){
+			$scope.modalMsg = 'Please enter password';
+			return;
+		}		
 		$http({
 		    method: 'POST',
 		    url: modalData.url,
@@ -258,10 +284,10 @@ angular.module('main').controller('modalInstanceController', ['$scope', '$http',
 				}									
 				$modalInstance.dismiss('cancel');
 			}else{
-				$window.alert('Error:' + resp.msg);	
+				$scope.modalMsg = resp.msg;	
 			}
 		}).error(function(err_msg){
-		  	$window.alert('Error:' + err_msg);
+		  	$scope.modalMsg = err_msg;
 		});
 	};
 
@@ -289,7 +315,7 @@ mainApp.factory('httpPostGetService', ['$http', '$window', 'transformReq', funct
 		httpPostGet: function(method, urlStr, postData, callback, errorHandler){
 				var processError = function(err_msg){
 						if(errorHandler){
-							errorHandler.call(this);
+							errorHandler.call(this, err_msg);
 						}else{
 							$window.alert('Error:' + err_msg);
 						}	

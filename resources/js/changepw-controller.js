@@ -1,5 +1,5 @@
 /** Change password controller */
-mainApp.controller('changepwController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){	
+mainApp.controller('changepwController', ['$scope', '$http', 'transformReq', function($scope, $http, transformReq){	
 
 	$scope.password = '';
 	$scope.newPassword = '';
@@ -43,7 +43,7 @@ mainApp.controller('changepwController', ['$scope', '$http', '$window', 'transfo
 	$scope.changePassword = function(){		
 		var statusObj = validateForm();
 		if (!statusObj.stat ){
-			$window.alert(statusObj.msg);
+			$scope.changePwError = statusObj.msg;
 			return;
 		}
 		$http({
@@ -53,9 +53,9 @@ mainApp.controller('changepwController', ['$scope', '$http', '$window', 'transfo
 			    data: {password: $scope.password, new_password: $scope.newPassword},
 			    headers: glb_formHeader
 			}).success(function(status){			
-				$window.alert(status);
+				$scope.changePwError = status;
 			}).error(function(err_msg){
-				$window.alert(err_msg);
+				$scope.changePwError = err_msg;
 			});			
 	};
 }]);

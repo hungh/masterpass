@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="login-app">
  <head>
   <meta charset="UTF-8">
   <meta name="Generator" content="EditPlus�">
@@ -22,14 +22,13 @@
  </head>
  </head>
  <body>
-  <div class="welcome">    
-    <font style="color: blue">Welcome to HTTP Python server</font><br>
-    <strong style="color:green">Secure Password Storage</strong><br><br>                    
+  <div class="welcome">        
+    <strong style="color:green">Welcome to password storage</strong><br><br>                        
   </div>
   <br>
   
-  <div ng-app='login-app'>
-    <div class="main" ng-controller="loginController">    
+  <div  class="main" ng-controller="loginController">        
+    <div class="jumbotron modal-body" style="width: 200px;" >                
       <form ng-submit="login_submit()" role="form" autocomplete="{{getAutoComplete(autocomplete)}}">
           <div class="form-group">
             <label for="userid">User name:</label>
@@ -45,11 +44,15 @@
           </div>
 
           <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="right" title="Login into application">Login</button><br>   
-    </form>
-          <div ng-controller="forgotPasswordController">
-            <a href="#" ng-click="resetPasswordPopup()">Forgot Your Password?</a>  
-          </div>    
-  </div>
+      </form>
+      <div ng-controller="forgotPasswordController">
+        <a href="#" ng-click="resetPasswordPopup()">Forgot Your Password?</a>  
+      </div>    
+     
+    </div>
+    <div>
+      <p ng-init="" style="width:200px;" class="bg-danger">{{loginError}}</p>
+    </div>
 
   
  <!-- popover -->

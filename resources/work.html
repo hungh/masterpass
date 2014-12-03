@@ -47,9 +47,9 @@
           <div class="clearfix visible-lg"></div>              
       </div>
 
-      <div class="jumbotron main modal-body">  
-            <div style="display:block" id="workAreaId">    
-                <div class="first-column">
+      <div>  
+            <div class="main" style="display:block" id="workAreaId">    
+                <div class="jumbotron modal-body first-column">
                   <strong><span class="glyphicon glyphicon-cloud"></span>&nbsp;Retrieve and Update</strong><br>      
                   <small class="text-left">Select user:</small>
                   <select class="form-control"  ng-model="currUser" ng-options="user.login group by user.env_name for user in users">
@@ -79,7 +79,7 @@
 
               </div>
 
-              <div class="second-column">
+              <div class="jumbotron modal-body second-column">
                 <strong><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;Create new</strong><br>      
                 <small>Select environment:</small>
                 <select class="form-control"  ng-model="currEnviron" ng-options="environ as environ for environ in environs">
@@ -88,10 +88,22 @@
                 <input type="text" class="mtext" ng-model="username">
                 <br>                
                 <small>Password:</small>
-                <input type="password" class="mtext" ng-model="password">
-                <br><br>
+                <input type="password" class="mtext" ng-model="password" id="newPasswordId">
+                <br>
+                <small>Confirm Password:</small>
+                <input type="password" class="mtext" ng-model="confirmPassword" id="confirmNewPasswordId">
+                <br>
+                <div class="checkbox">
+                      <label>
+                        <input type="checkbox" ng-change="showNewPassword(['newPasswordId', 'confirmNewPasswordId'])" ng-model="isShownPassword"><span class="glyphicon glyphicon-hand-up"></span>&nbsp;Show password
+                      </label>
+                </div>
                 <button class="btn btn-primary" ng-click="addPassword()"><span class="glyphicon glyphicon-save"></span>&nbsp;Save Password</button>
               </div>
+
+              <div>
+                <small ng-init="" class="bg-danger">{{workAreaMsg}}</small>
+              </div> 
           </div>        
 
           <!-- popover -->
@@ -109,17 +121,23 @@
                 <button class="btn btn-primary" ng-click="updateGetPwsUserPassword(masterPassword)">OK</button>
                 <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
             </div>
+            <div>
+                <small ng-init="" class="bg-danger">{{modalMsg}}</small>
+            </div>
           </script>
           <!---poe-->
         </div>
 
-        <div class="jumbotron main modal-body" style="display:none" id="changeEnvId">
-            <div class="form-group first-column">
+        <div class="main" style="display:none" id="changeEnvId">
+            <div class="jumbotron modal-body form-group first-column">
                <label for="newEnv"><span class="glyphicon glyphicon-plus-sign"></span>&nbsp;New Environment</label>
                <input type="strong" placeholder="Enter a new env name" class="form-control" ng-model="newEnviron" id="newEnv"><br>
                <button type="submit" class="btn btn-primary" ng-click="createNewEnv()"><span class="glyphicon glyphicon-plus"></span>&nbsp;Create New</button>
+               <div>
+                  <small ng-init="" class="bg-{{msgType}}">{{envErrMsg}}</small>
+               </div>
             </div>
-            <div class="form-group second-column">               
+            <div class="jumbotron modal-body form-group second-column">               
                <label for="newEnvTxt"><span class="glyphicon glyphicon-minus-sign"></span>&nbsp;Remove Environment</label>
                     <input class="form-control" id="newEnvTxt" placeholder="Type to search env" ng-model="searchEnv" data-toggle="tooltip" data-placement="right" title="Type to search a env"><br>
                     <div class="panel-group adjust-width" id="accordion">
@@ -139,31 +157,34 @@
                       
                   </div>                  
                   <span class="glyphicon glyphicon-warning-sign"></span><abbr title="Delete environment will erase all entries under it!">&nbsp;<p style="font-size:12px;color:red;">Warning!</p></abbr> 
-            </div>            
+            </div>              
         </div>
 
         <!-- change password-->
-        <div class="jumbotron main modal-body main-changepw"  style="display:none" id="changePwId" ng-controller="changepwController">  
-           <strong><span class="glyphicon glyphicon-refresh"></span>&nbsp;Change your password</strong>
-           <form role="form">
-            <div class="form-group {{pw_validdated_css}}">
-                  <label for="password"><small>Current Password:</small></label>
-                  <input type="password" class="form-control" ng-model="password" id="password">
-                </div>
+        <div class="main" ng-controller="changepwController" style="display:none" id="changePwId">
+          <div class="jumbotron  modal-body main-changepw">  
+             <strong><span class="glyphicon glyphicon-refresh"></span>&nbsp;Type new password</strong><br><br>
+             <form role="form">
+              <div class="form-group {{pw_validdated_css}}">
+                    <label for="password"><small>Current Password:</small></label>
+                    <input type="password" class="form-control" ng-model="password" id="password">
+                  </div>
 
-                <div class="form-group {{newpw_validdated_css}}">
-                  <label for="newPassword"><small>New Password:</small></label>
-                  <input type="password" class="form-control" ng-model="newPassword" id="newPassword">
-                </div>
+                  <div class="form-group {{newpw_validdated_css}}">
+                    <label for="newPassword"><small>New Password:</small></label>
+                    <input type="password" class="form-control" ng-model="newPassword" id="newPassword">
+                  </div>
 
-                <div class="form-group {{renewpw_validdated_css}}">
-                  <label for="reNewPassword"><small>Repeat New Password:</small></label>
-                  <input type="password" class="form-control" ng-model="reNewPassword" id="reNewPassword">
-                </div>
+                  <div class="form-group {{renewpw_validdated_css}}">
+                    <label for="reNewPassword"><small>Repeat New Password:</small></label>
+                    <input type="password" class="form-control" ng-model="reNewPassword" id="reNewPassword">
+                  </div>
 
-                <button type="submit" class="btn btn-primary" ng-click="changePassword()"><span class="glyphicon glyphicon-save"></span>&nbsp;Save Change</button>
-             </form>
-       </div>
+                  <button type="submit" class="btn btn-primary" ng-click="changePassword()"><span class="glyphicon glyphicon-save"></span>&nbsp;Save Change</button>
+               </form>                            
+         </div>      
+         <small  ng-init="" class="bg-danger">{{changePwError}}</small>            
+        </div>
        <!-- cpw-->
 
      </div>

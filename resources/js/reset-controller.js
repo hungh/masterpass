@@ -8,6 +8,7 @@ angular.module('reset-app', [])
 		}
 		var sid = getParameterByName('sid', $window);
 		if (sid != ''){
+			$scope.resetError = "";
 			$http({
 				method: 'POST',
 				url: '/account/update',
@@ -15,10 +16,10 @@ angular.module('reset-app', [])
 			    data: {sid: sid, password: $scope.password, newPassword: $scope.newPassword},
 			    headers: glb_formHeader	
 			}).success(function(msg){
-				$window.alert(msg);
+				$scope.resetError = msg;
 			}).
 			error(function(msg){
-				$window.alert(msg);
+				$scope.resetError = msg;
 			});
 		}
 	};
