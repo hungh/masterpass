@@ -1,9 +1,9 @@
 /** login controller */
 var loginApp = angular.module('login-app', ['ui.bootstrap']);
 loginApp.controller('loginController', ['$scope', '$http', '$window', 'transformReq', function($scope, $http, $window, transformReq){		
-
+		
 		$scope.login_submit = function(){
-
+			$scope.loginError = "";
 			var httpResponse = $http({
 			    method: 'POST',
 			    url: '/login',
@@ -15,11 +15,11 @@ loginApp.controller('loginController', ['$scope', '$http', '$window', 'transform
 				if (jsonData.stat === true){
 					document.location.href= jsonData.msg;	
 				}else{
-					$window.alert('Error:' + jsonData.msg);
+					$scope.loginError = jsonData.msg;
 				}				
 
 			}).error(function(err_msg){
-				$window.alert('Error: '+  err_msg);
+				$scope.loginError = err_msg;
 			});	
 		}
 

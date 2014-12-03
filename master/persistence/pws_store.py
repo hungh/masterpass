@@ -3,14 +3,15 @@ from master.boostrap.db_client import SingleDBClient
 from master.beans.pws_entries import PwsEntry
 from master.encryption.encrypt_bfish import MyBlowFish
 
-from pymongo import ASCENDING
+from pymongo import ASCENDING, DESCENDING
 
 
 class PwsStore:
     def __init__(self):
         self.client = SingleDBClient().get_client()
         self.db = self.client.pws
-        self.db.pws_col.ensure_index([('owner', ASCENDING), ('login', ASCENDING)], unique=True)
+        self.db.pws_col.ensure_index([('owner', ASCENDING), ('login', ASCENDING),
+                                      ('env_name', DESCENDING)], unique=True)
 
     def insert_new_pws(self, pws_object):
         try:

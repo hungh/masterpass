@@ -44,11 +44,13 @@ angular.module('admin-app', [])
 
 		$scope.addUser = function(){	
 			if(!$scope.newId){
-				$window.alert('User ID is required.');
+				$scope.addUserMsg = 'User ID is required.';
+				$scope.msgType = 'warning';
 				return;
 			}
 			if(!$scope.newPassword){
-				$window.alert('Password is required.');
+				$scope.addUserMsg = 'Password is required.';
+				$scope.msgType = 'warning';
 				return;
 			}				
 
@@ -60,16 +62,20 @@ angular.module('admin-app', [])
 			    data: newUser,
 			    headers: glb_formHeader
 			}).success(function(status){
-				$scope.users.push(newUser);
-				alert(status);
+				$scope.users.push(newUser);				
+				$scope.addUserMsg = status;
+				$scope.msgType = 'success';
 			}).error(function(err_msg){
-				alert(err_msg);
+				$scope.msgType = 'warning';
+				$scope.addUserMsg = err_msg;
+				$scope.msgType = 'danger';
 			});			
 		}
 
 		$scope.saveUser = function(){			
 			if(!$scope.selectedUser || !$scope.selectedUser.id){
-				$window.alert('Please enter select a user');
+				$scope.addUserMsg ='Please enter select a user';
+				$scope.msgType = 'danger';
 				return;
 			}
 			var httpResponse = $http({
@@ -78,10 +84,12 @@ angular.module('admin-app', [])
 			    transformRequest: transformReq,
 			    data: {id: $scope.selectedUser.id, first: $scope.selectedUser.first, last: $scope.selectedUser.last, email: $scope.selectedUser.email},
 			    headers: glb_formHeader
-			}).success(function(status){
-				$window.alert(status);				
-			}).error(function(err_msg){
-				alert(err_msg);
+			}).success(function(status){				
+				$scope.updateUserMsg = status;				
+				$scope.msgType = 'success';
+			}).error(function(err_msg){				
+				$scope.updateUserMsg = err_msg;
+				$scope.msgType = 'danger';
 			});			
 		};
 
@@ -96,7 +104,7 @@ angular.module('admin-app', [])
 				    method: 'GET',
 				    url: '/user/delete?id=' + uid,
 				}).success(function(stat){
-					$window.alert(stat);
+					$scope.removeUserInfoMsg = stat;
 					angular.forEach($scope.users, function(oneUser, index){
 						if (oneUser.id == uid){
 							$scope.users.splice(index, 1);
@@ -104,7 +112,8 @@ angular.module('admin-app', [])
 						}
 					});
 				}).error(function(err_msg){
-					alert(err_msg);
+					$scope.addUserMsg = err_msg;
+					$scope.msgType = 'danger';
 				});						
 			}
 		};

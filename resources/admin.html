@@ -93,9 +93,10 @@
                           <label for="email">Email address:</label>
                           <input type="email" class="form-control" id="email" ng-model="selectedUser.email">
                         </div>
-
-
                         <button type="submit" class="btn btn-primary" ng-click="saveUser()"><span class="glyphicon glyphicon-save"></span>&nbsp;Update</button>
+                        <div>
+                          <small ng-init="" class="bg-{{msgType}}">{{updateUserMsg}}</small>
+                        </div>                       
                       </form>                      
               </div>
 
@@ -130,6 +131,9 @@
                   <button type="submit" class="btn btn-primary" ng-click="addUser()"><span class="glyphicon glyphicon-save"></span>&nbsp;Add</button>
                 </form>
 
+                <div>
+                  <small ng-init="" class="bg-{{msgType}}">{{addUserMsg}}</small>
+                </div>                
 
               </div>
 
@@ -153,9 +157,12 @@
                         </div>
                       </div>                      
                     </div>
+                    <div>
+                      <small ng-init="" class="bg-info">{{removeUserInfoMsg}}</small>
+                    </div>
                     <span class="glyphicon glyphicon-warning-sign"></span><abbr title="Delete a user will erase all data belonging to it!">&nbsp;<p style="font-size:12px;color:red;">Warning!</p></abbr>                    
               </div>
-      </div> 
+        </div> 
     </div>
   </div>
 </body>

@@ -55,8 +55,7 @@ BLACK_LIST = ['10.9.11.19']
 SPEED_THRESHOLD = 0.00001
 
 # error messages
-NOT_AUTHORIZED = '<!doctype html><html lang="en"><head><meta http-equiv="refresh" ' \
-                 'content="3; url=/"/></head><body>Not authorize to use application.</body></html>'
+NOT_AUTHORIZED = 'Not authorize to use application'
 SESSION_EXPIRED = "Your session has expired. Please logout and re-login."
 TEMPLATE_404_ERROR = '<!DOCTYPE html><html><head><title>Ooops!</title>' \
                      '</head><body><img src="/img/404.png"><br><a href="/">' \

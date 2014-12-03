@@ -21,15 +21,15 @@
   <script src="/js/reset-controller.js"></script>
  </head>
  </head>
- <body>
-   
-    <div ng-app="reset-app">
-      <div class="jumbotron main modal-body" ng-controller="resetController">
-         <form ng-submit="changePassword()" role="form">
-            <div class="form-group">
-              <label>Please enter your new password:</label>           
-            </div>
-
+ <body ng-app="reset-app" ng-controller="resetController">   
+    <div class="welcome">        
+      <strong style="color:green">Secure storage-Reset password</strong><br><br>                        
+    </div>
+    <br>
+    <div class="main">
+      <div class="jumbotron modal-body reset-password" >
+          <strong>Type new password:</strong><br><br>                    
+          <form ng-submit="changePassword()" role="form">
             <div class="form-group">
               <label for="password">Password:</label>
               <input type="password" class="form-control" ng-model='password' id="password">
@@ -40,8 +40,12 @@
             </div>
 
             <button type="submit" class="btn btn-info" >Change Password</button><br>   
-      </form>
+          </form>
       </div>
-    </div>
+      <div>
+        <p ng-init="" class="bg-danger reset-password">{{resetError}}</p>
+      </div>
+  </div>    
+  
  </body>
  </html>
