@@ -46,7 +46,7 @@ GMAIL_SMTP = "smtp.gmail.com"
 TSL_PORT = 587
 
 # allowed paths in application
-ALLOWED_PATHS = ['/login', '/account/reset', '/account/redirect', '/account/update', '/index.html', '/', 'reset.html']
+ALLOWED_PATHS = ['/login', '/logout', '/account/reset', '/account/redirect', '/account/update', '/index.html', '/', 'reset.html']
 
 # black list of IP addresses
 BLACK_LIST = ['10.9.11.19']
