@@ -22,6 +22,13 @@
   <script src="/js/changepw-controller.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('[data-toggle="popover"]').popover({
+          placement : 'right'
+      });
+    });
+  </script>
  </head>
  <body>
   
@@ -41,7 +48,7 @@
                     <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>                        
                   </ul>
                 </li> 
-                <li role="presentation" class="active"><a href="#">Welcome <span class="glyphicon glyphicon-user"></span><span class="badge">{{appLoginName}}</span></a></li>           
+                <li role="presentation" class="active"><a href="#"   class="btn btn-lg btn-success" role="button" data-toggle="popover" data-trigger="focus" title="Account" data-content="User: {{appLoginName}}"  >Welcome <span class="glyphicon glyphicon-user"></span><span class="badge">{{appLoginName}}</span></a></li>           
               </ul>
             
           <div class="clearfix visible-lg"></div>              
