@@ -38,7 +38,7 @@ INSTALLATION:
 
   or,
 
-  $ wget https://code.google.com/p/py-bcrypt/downloads/detail?name=py-bcrypt-0.4.tar.gz&can=2&q=
+  $ wget https://py-bcrypt.googlecode.com/files/py-bcrypt-0.4.tar.gz 
 
   $ cd py-bcrypt-0.4
 
